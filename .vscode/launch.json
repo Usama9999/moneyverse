@@ -1,0 +1,45 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "talentogram",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "talentogram (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "talentogram (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "easy_puzzle_game",
+            "cwd": "modules\\easy_puzzle_game",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "easy_puzzle_game (profile mode)",
+            "cwd": "modules\\easy_puzzle_game",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "easy_puzzle_game (release mode)",
+            "cwd": "modules\\easy_puzzle_game",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

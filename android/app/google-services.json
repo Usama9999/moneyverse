@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1074605311013",
+    "project_id": "talentogram-766df",
+    "storage_bucket": "talentogram-766df.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1074605311013:android:c253cf88d5a2d1cd852bcc",
+        "android_client_info": {
+          "package_name": "com.example.talentogram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1074605311013-l4k4vthb5k9s5roj5vckud63asb8d9tn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.talentogram",
+            "certificate_hash": "0ba584e15f9ed7c035e53caff52717274a167fd1"
+          }
+        },
+        {
+          "client_id": "1074605311013-8v616k128j59rttke2pa00m8924bint8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRlu8j2pCxZTSf6svRVo1ciLCNqt-1JB4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1074605311013-8v616k128j59rttke2pa00m8924bint8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

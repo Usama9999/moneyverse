@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string name="app_name">Talento</string>
+<string name="facebook_app_id">708588497648439</string>
+<string name="fb_login_protocol_scheme">fb708588497648439</string>
+<string name="facebook_client_token">8d8f6ea3b25e5d9a307c813e6ac5c58a</string>
+</resources>
