@@ -87,7 +87,7 @@ class UpcomingOngoingContests extends StatelessWidget {
       },
       child: Container(
         margin: EdgeInsets.only(right: wd(15), left: index == 0 ? wd(15) : 0),
-        padding: const EdgeInsets.all(15),
+        padding:  EdgeInsets.all(ht(15)),
         height: wd(135),
         width: wd(240),
         decoration: ContainerProperties.simpleDecoration(radius: 16)
@@ -137,18 +137,15 @@ class UpcomingOngoingContests extends StatelessWidget {
                   const Spacer(),
                   Row(
                     children: [
-                      Text(
-                        'USERS ',
-                        style: normalText(size: 14),
-                      ),
+                   
                       CircularPercentIndicator(
-                        radius: 27.0,
+                        radius: ht(20),
                         lineWidth: 4.0,
                         percent: 1,
                         center: FittedBox(
                             fit: BoxFit.scaleDown,
                             child: Padding(
-                              padding: const EdgeInsets.all(20.0),
+                              padding: EdgeInsets.all(ht(20)),
                               child: Text(
                                 "${contest.participents}",
                                 style: headingText(),

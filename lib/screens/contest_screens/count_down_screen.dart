@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:talentogram/controllers/contest_controller/contest_Manager_controller.dart';
+import 'package:talentogram/globals/app_views.dart';
+import 'package:talentogram/screens/contest_screens/time_builder.dart';
 import 'package:talentogram/globals/adaptive_helper.dart';
 import 'package:talentogram/globals/container_properties.dart';
 import 'package:talentogram/globals/widgets/appbars.dart';
@@ -21,7 +23,9 @@ class _CountDownScreenState extends State<CountDownScreen> {
   var controll = Get.put(ContestManagerController());
   @override
   void initState() {
-    controll.startCountdown(widget.contest);
+    Future.delayed(Duration.zero, () {
+      controll.calculateTime(widget.contest);
+    });
     super.initState();
   }
 
@@ -35,66 +39,64 @@ class _CountDownScreenState extends State<CountDownScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppBar('', isCentered: true),
-      body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: wd(15)),
-        children: [
-          Text(
-            'MoneyVerse Contest will start in:',
-            style: subHeadingText(size: 22, color: AppColors.textGrey),
-          ),
-          SizedBox(
-            height: ht(20),
-          ),
-          Obx(
-            () => Row(
-              children: [
-                timeContainer(controll.days.toString(), 'Days'),
-                timeContainer(controll.hours.toString(), 'Hours'),
-                timeContainer(controll.minutes.toString(), 'Minutes'),
-                timeContainer(controll.seconds.toString(), 'Seconds'),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: ht(40),
-          ),
-          Row(
-            children: [
-              moodScrore(),
-              SizedBox(
-                width: wd(20),
-              ),
-              motivationalQoute(),
-            ],
-          ),
-          SizedBox(
-            height: ht(40),
-          ),
-          Container(
-            decoration: ContainerProperties.shadowDecoration(
-                color: AppColors.sparkliteblue4, blurRadius: 1),
-            padding: EdgeInsets.all(wd(20)),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Following are the instruction for this contest:',
-                  style: headingText(size: 18),
-                ),
-                SizedBox(
-                  height: ht(10),
-                ),
-                Column(
-                  children: List.generate(
-                    getRules.length,
-                    (index) => dotRow(getRules[index]),
+      body: GetBuilder<ContestManagerController>(builder: (value) {
+        return value.timerLoading
+            ? AppViews.showLoading()
+            : ListView(
+                padding: EdgeInsets.symmetric(horizontal: wd(15)),
+                children: [
+                  Text(
+                    'MoneyVerse Contest will start in:',
+                    style: subHeadingText(size: 22, color: AppColors.textGrey),
                   ),
-                )
-              ],
-            ),
-          ),
-        ],
-      ),
+                  SizedBox(
+                    height: ht(20),
+                  ),
+                  CountdownBuilder(
+                      start: widget.contest.getStartTime,
+                      now: value.datenow,
+                      contest: widget.contest),
+                  SizedBox(
+                    height: ht(40),
+                  ),
+                  Row(
+                    children: [
+                      moodScrore(),
+                      SizedBox(
+                        width: wd(20),
+                      ),
+                      motivationalQoute(),
+                    ],
+                  ),
+                  SizedBox(
+                    height: ht(40),
+                  ),
+                  Container(
+                    decoration: ContainerProperties.shadowDecoration(
+                        color: AppColors.sparkliteblue4, blurRadius: 1),
+                    padding: EdgeInsets.all(wd(20)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Following are the instruction for this contest:',
+                          style: headingText(size: 18),
+                        ),
+                        SizedBox(
+                          height: ht(10),
+                        ),
+                        Column(
+                          children: List.generate(
+                            getRules.length,
+                            (index) => dotRow(getRules[index]),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              );
+      }),
     );
   }
 

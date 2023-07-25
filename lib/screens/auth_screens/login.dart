@@ -104,20 +104,6 @@ class _LoginState extends State<Login> {
                     const SizedBox(
                       height: 15,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            controller.loginWithGoogle();
-                          },
-                          child: Image.asset(
-                            'assets/images/google.png',
-                            height: 35,
-                          ),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ),

@@ -37,8 +37,7 @@ class PostCommentController extends GetxController {
         commentId: id,
         postId: 32,
         userId: Get.find<UserDetail>().userId,
-        comment: controllerMessage.text,
-        likes: 0,
+        comment: controllerMessage.text, 
         createdAt: 'Just Now',
         updatedAt: 'updatedAt'));
     resetController();
@@ -82,11 +81,7 @@ class PostCommentController extends GetxController {
     var res = await PostRepo().getPostComments(requestParams);
 
     res.fold((failure) {
-      Global.showToastAlert(
-          context: Get.overlayContext!,
-          strTitle: "",
-          strMsg: failure.MESSAGE,
-          toastType: TOAST_TYPE.toastError);
+      
       mShowData = false;
       update();
     }, (mResult) {

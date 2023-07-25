@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -83,32 +84,38 @@ class LoginController extends GetxController {
     if (!validateion()) {
       return;
     }
-    isLoading = true;
+    var token = await FirebaseMessaging.instance.getToken();
+    try {
+      isLoading = true;
+      update();
+      HashMap<String, Object> requestParams = HashMap();
 
-    update();
-    HashMap<String, Object> requestParams = HashMap();
+      requestParams['email'] = controllerEmail.text;
+      requestParams['password'] = controllerPassword.text;
+      requestParams['firebaseToken'] = token ?? '';
 
-    requestParams['email'] = controllerEmail.text;
-    requestParams['password'] = controllerPassword.text;
+      var signInEmail = await AuthRepo().login(requestParams);
 
-    var signInEmail = await AuthRepo().login(requestParams);
-
-    signInEmail.fold((failure) {
-      Global.showToastAlert(
-          context: Get.overlayContext!,
-          strTitle: "",
-          strMsg: failure.MESSAGE,
-          toastType: TOAST_TYPE.toastError);
+      signInEmail.fold((failure) {
+        Global.showToastAlert(
+            context: Get.overlayContext!,
+            strTitle: "",
+            strMsg: failure.MESSAGE,
+            toastType: TOAST_TYPE.toastError);
+        isLoading = false;
+        update();
+      }, (mResult) {
+        isLoading = false;
+        update();
+        Get.offAll(() => const NavBarScreen());
+        if (isRememberMe) {
+          storeAccounts();
+        }
+      });
+    } catch (e) {
       isLoading = false;
       update();
-    }, (mResult) {
-      isLoading = false;
-      update();
-      Get.offAll(() => const NavBarScreen());
-      if (isRememberMe) {
-        storeAccounts();
-      }
-    });
+    }
   }
 
   signupTask(

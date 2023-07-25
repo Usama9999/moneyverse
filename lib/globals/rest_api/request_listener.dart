@@ -89,6 +89,7 @@ class ReqListener {
     debugPrint("REQ. PARAMS : $requestParams");
     debugPrint("REQ. URL : ${RequestBuilder.liveUrl}$strUrl");
     debugPrint("REQ. BODY : ${response.body.toString()}");
+    await Future.delayed(const Duration(milliseconds: 500));
 
     return response.body;
   }
