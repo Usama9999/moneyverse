@@ -64,6 +64,55 @@ class ContestRepo {
     }
   }
 
+  Future<Either<Failure, Success>> getTime(
+      HashMap<String, Object> requestParams) async {
+    try {
+      String url = 'contest/currentTime';
+      String response = await ReqListener.fetchPost(
+          strUrl: url,
+          requestParams: requestParams,
+          mReqType: ReqType.get,
+          mParamType: ParamType.simple);
+
+      Result? mResponse =
+          Result(responseStatus: true, responseMessage: 'Success');
+      if (response.isNotEmpty) {
+        mResponse = Global.getData(response);
+      } else {
+        return Left(
+            Failure(DATA: "", MESSAGE: "No data found.", STATUS: false));
+      }
+
+      if (mResponse!.responseStatus == true) {
+        Map result = mResponse.responseData as Map;
+
+        DateTime datetime =
+            DateTime.parse(result['time'] ?? DateTime.now().toString());
+
+        Success mSuccess = Success(
+            responseStatus: mResponse.responseStatus,
+            responseData: datetime,
+            responseMessage: mResponse.responseMessage);
+
+        return Right(mSuccess);
+      }
+
+      if (!Global.checkNull(mResponse.responseMessage)) {
+        mResponse.responseMessage = AppAlert.ALERT_SERVER_NOT_RESPONDING;
+      }
+
+      return Left(Failure(
+          MESSAGE: mResponse.responseMessage,
+          STATUS: false,
+          DATA: mResponse.responseData != null
+              ? mResponse.responseData as Object
+              : ""));
+    } catch (e) {
+      log(e.toString());
+      return Left(Failure(STATUS: false, MESSAGE: e.toString(), DATA: ""));
+    }
+  }
+
   Future<Either<Failure, Success>> participate(
       HashMap<String, Object> requestParams) async {
     try {

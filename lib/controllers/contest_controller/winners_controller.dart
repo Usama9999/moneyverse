@@ -20,6 +20,7 @@ class WinnerController extends GetxController {
   bool contestLoader = false;
   Future<void> getPreviousContests() async {
     contestLoader = true;
+    contests.clear();
     update();
     HashMap<String, Object> requestParams = HashMap();
 

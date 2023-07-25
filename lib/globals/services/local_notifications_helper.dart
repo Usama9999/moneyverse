@@ -7,12 +7,33 @@ class LocalNotificationChannel {
   static final FlutterLocalNotificationsPlugin
       _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-  static initializer() {
-    InitializationSettings initializationSettings =
-        const InitializationSettings(
-            android: AndroidInitializationSettings('@mipmap/ic_launcher'));
+  static initializer() async {
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
+            android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+            iOS: DarwinInitializationSettings(
+                onDidReceiveLocalNotification: onDidReceiveLocalNotification));
 
-    _flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    _flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onDidReceiveNotificationResponse: onTap,
+        onDidReceiveBackgroundNotificationResponse: onTap);
+    final NotificationAppLaunchDetails? notificationAppLaunchDetails =
+        await _flutterLocalNotificationsPlugin
+            .getNotificationAppLaunchDetails();
+    if (notificationAppLaunchDetails != null) {
+      if (notificationAppLaunchDetails.notificationResponse != null) {
+        // if (notificationAppLaunchDetails.notificationResponse!.payload ==
+        //     "Activity") {
+        //   Get.to(() => ActivityDashboard());
+        // } else if (notificationAppLaunchDetails.notificationResponse!.payload ==
+        //     "ToDo") {
+        //   Get.to(() => ToDoScreen());
+        // } else if (notificationAppLaunchDetails.notificationResponse!.payload ==
+        //     "fasting") {
+        //   Get.to(() => FastingTracker());
+        // }
+      }
+    }
   }
 
   static Future<void> display(RemoteMessage message) async {
@@ -50,4 +71,9 @@ class LocalNotificationChannel {
   //     log(e);
   //   }
   // }
+
+  static void onDidReceiveLocalNotification(
+      int id, String? title, String? body, String? payload) {}
+
+  static void onTap(NotificationResponse details) {}
 }

@@ -16,7 +16,7 @@ class ContestModel {
   int totalPrize;
   int division;
   String startDate;
-  String winners;
+  List winners;
   String endDate;
   int participents;
   dynamic participated;
@@ -53,7 +53,7 @@ class ContestModel {
         division: json["division"],
         startDate: json["startDate"],
         endDate: json["endDate"],
-        winners: json["winners"] ?? '',
+        winners: json["winners"] ?? [],
         participents: json["participents"] ?? 0,
         participated: json["participated"],
       );
@@ -76,10 +76,9 @@ class ContestModel {
   bool get isWinnerAnnounced => winnerAnnounced == 1;
   bool get isJoined => participated != null;
 
-  List<Winner> get winnerList => winners.isEmpty
-      ? []
-      : (jsonDecode(winners) as List).map((e) => Winner.fromMap(e)).toList()
-    ..sort((a, b) => a.rank.compareTo(b.rank));
+  List<Winner> get winnerList =>
+      winners.isEmpty ? [] : (winners).map((e) => Winner.fromMap(e)).toList()
+        ..sort((a, b) => a.rank.compareTo(b.rank));
 
   DateTime get getStartTime {
     var dateTime = DateFormat("yyyy-MM-ddTHH:mm:ssZ").parse(startDate, true);
@@ -137,6 +136,6 @@ class Winner {
         name: json['firstName'] + " " + json['lastName'],
         image: json['image'],
         userId: json['userId'],
-        rank: json['rank'] ?? 0,
+        rank: json['position'] ?? 0,
       );
 }

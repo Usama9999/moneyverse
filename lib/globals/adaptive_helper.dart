@@ -48,3 +48,13 @@ double tx(double inputWidth) {
     return (inputWidth / 375.0) * h;
   }
 }
+// double tx(double inputHeight) {
+//    double screenHeight = SizeConfig.screenHeight;
+//   // 812 is the layout height that designer use
+//   if (SizeConfig.orientation == Orientation.portrait) {
+//     screenHeight = screenHeight < 500 ? 550 : screenHeight;
+//     return (inputHeight / 812.0) * screenHeight;
+//   } else {
+//     return (inputHeight / 812.0) * SizeConfig.screenWidth;
+//   }
+// }

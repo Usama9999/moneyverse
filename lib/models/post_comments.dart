@@ -13,7 +13,6 @@ class PostComments {
     required this.postId,
     required this.userId,
     required this.comment,
-    required this.likes,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -25,7 +24,6 @@ class PostComments {
   int postId;
   int userId;
   String comment;
-  int likes;
   String createdAt;
   String updatedAt;
 
@@ -42,7 +40,6 @@ class PostComments {
         postId: json["postId"],
         userId: json["userId"],
         comment: json["comment"],
-        likes: json["likes"] ?? '0',
         createdAt: json["createdAt"] ?? 'T',
         updatedAt: json["updatedAt"] ?? 'T',
       );
@@ -55,7 +52,6 @@ class PostComments {
         "postId": postId,
         "userId": userId,
         "comment": comment,
-        "likes": likes,
         "createdAt": createdAt,
         "updatedAt": updatedAt,
       };

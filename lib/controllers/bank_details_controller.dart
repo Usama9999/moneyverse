@@ -8,7 +8,7 @@ import 'package:talentogram/respositories/user_repo.dart';
 
 class BankDetailController extends GetxController {
   TextEditingController countryController =
-      TextEditingController(text: 'India');
+      TextEditingController(text: 'Pakistan');
   TextEditingController bankName = TextEditingController(text: '');
   TextEditingController numberController = TextEditingController();
   TextEditingController nameController = TextEditingController();

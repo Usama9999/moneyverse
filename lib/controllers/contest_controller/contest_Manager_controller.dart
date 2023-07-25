@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:talentogram/globals/enum.dart';
@@ -80,53 +81,41 @@ class ContestManagerController extends GetxController {
   /// Count down screen
   ///////////////////////////////////
 
-  RxInt days = 0.obs;
-  RxInt hours = 0.obs;
-  RxInt minutes = 0.obs;
-  RxInt seconds = 0.obs;
+  bool timerLoading = false;
+  DateTime datenow = DateTime.now();
 
   Timer? timer;
 
-  void startCountdown(ContestModel contest) {
-    days(0);
-    hours(0);
-    minutes(0);
-    seconds(0);
-    if (timer != null) {
-      timer = null;
-    }
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      calculateTime(contest);
-    });
-  }
-
   calculateTime(ContestModel contest) async {
-    if (contest.getStartTime.compareTo(DateTime.now()) < 0) {
-      if (timer != null) {
-        timer!.cancel();
-        timer = null;
-        if (contest.type == 'post') {
-          Get.off(() => AddPostScreen(
-                contest: contest,
-              ));
-        } else if (contest.type == 'quiz') {
-          Get.off(() => QuizContest(
-                contest: contest,
-              ));
-        } else {
-          Get.off(() => PuzzleGame(
-                contestModel: contest,
-              ));
-        }
-      }
+    timerLoading = true;
+    update();
+
+    DateTime? now = await getTime();
+    if (now == null) {
+      timerLoading = false;
+      update();
+      Get.back();
       return;
     }
-
-    var difference = contest.getStartTime.difference(DateTime.now());
-    days.value = (difference.inDays).round();
-    hours.value = (difference.inHours % 24).round();
-    minutes.value = (difference.inMinutes % 60).round();
-    seconds.value = (difference.inSeconds % 60).round();
+    datenow = now.toLocal();
+    log(datenow.toString());
+    timerLoading = false;
+    update();
+    if (contest.getStartTime.compareTo(datenow) < 0) {
+      if (contest.type == 'post') {
+        Get.off(() => AddPostScreen(
+              contest: contest,
+            ));
+      } else if (contest.type == 'quiz') {
+        Get.off(() => QuizContest(
+              contest: contest,
+            ));
+      } else {
+        Get.off(() => PuzzleGame(
+              contestModel: contest,
+            ));
+      }
+    }
   }
 
   cancelTime() {
@@ -134,6 +123,17 @@ class ContestManagerController extends GetxController {
       timer!.cancel();
       timer = null;
     }
+  }
+
+  Future<DateTime?> getTime() async {
+    HashMap<String, Object> requestParams = HashMap();
+    var res = await ContestRepo().getTime(requestParams);
+
+    return res.fold((failure) {
+      return null;
+    }, (mResult) {
+      return mResult.responseData as DateTime;
+    });
   }
 
   void _errorDialogue(Failure failure) {

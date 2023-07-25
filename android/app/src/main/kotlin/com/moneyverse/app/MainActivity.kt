@@ -1,4 +1,4 @@
-package com.example.talentogram
+package com.moneyverse.app
 
 import io.flutter.embedding.android.FlutterActivity
 
