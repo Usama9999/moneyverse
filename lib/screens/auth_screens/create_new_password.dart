@@ -48,24 +48,25 @@ class NewPasswordScreenState extends State<NewPasswordScreen> {
                     SizedBox(height: ht(57)),
                     Column(
                       children: [
-                        customTextFiled(controller.oldpasswordController,
-                            controller.oldpasswordNode,
-                            hint: 'Old password',
-                            icon: GestureDetector(
-                                onTap: () {
-                                  value.changeOldObscure();
-                                },
-                                child: Container(
-                                    height: 55,
-                                    width: 50,
-                                    alignment: Alignment.center,
-                                    child: Image.asset(
-                                      !value.oldobscure
-                                          ? "assets/images/show.png"
-                                          : "assets/images/hide.png",
-                                      height: 22,
-                                    ))),
-                            obscure: value.oldobscure),
+                        if (widget.changePassword)
+                          customTextFiled(controller.oldpasswordController,
+                              controller.oldpasswordNode,
+                              hint: 'Old password',
+                              icon: GestureDetector(
+                                  onTap: () {
+                                    value.changeOldObscure();
+                                  },
+                                  child: Container(
+                                      height: 55,
+                                      width: 50,
+                                      alignment: Alignment.center,
+                                      child: Image.asset(
+                                        !value.oldobscure
+                                            ? "assets/images/show.png"
+                                            : "assets/images/hide.png",
+                                        height: 22,
+                                      ))),
+                              obscure: value.oldobscure),
                         SizedBox(height: ht(15)),
                       ],
                     ),

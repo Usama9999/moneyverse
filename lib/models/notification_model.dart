@@ -4,40 +4,30 @@
 
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 class NotificationModel {
+  int notificationId;
+  String message;
+  String title;
+  dynamic toUser;
+  String createdAt;
+  String updatedAt;
+  dynamic contestId;
+  dynamic image;
+  String type;
+
   NotificationModel({
     required this.notificationId,
     required this.message,
-    required this.fromUser,
+    required this.title,
     required this.toUser,
-    required this.isFollowMessage,
-    required this.userName,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.contestId,
     required this.image,
-    required this.firstName,
-    required this.lastName,
-    required this.commentPost,
-    required this.isAudioPost,
-    required this.followedByMe,
-    required this.isVideoPost,
-    required this.likePost,
-    required this.thumbnail,
+    required this.type,
   });
-
-  int notificationId;
-  String message;
-  int fromUser;
-  int toUser;
-  int isFollowMessage;
-  int? likePost;
-  int? commentPost;
-  int? followedByMe;
-  int isVideoPost;
-  int isAudioPost;
-  String thumbnail;
-  String userName;
-  String image;
-  String firstName;
-  String lastName;
 
   factory NotificationModel.fromJson(String str) =>
       NotificationModel.fromMap(json.decode(str));
@@ -47,31 +37,41 @@ class NotificationModel {
   factory NotificationModel.fromMap(Map<String, dynamic> json) =>
       NotificationModel(
         notificationId: json["notificationId"],
+        title: json["title"],
         message: json["message"],
-        fromUser: json["fromUser"],
-        followedByMe: json["followedByMe"] ?? 0,
-        thumbnail: json["thumbnail"] ?? '',
         toUser: json["toUser"],
-        likePost: json["likePost"] ?? 0,
-        commentPost: json["commentPost"],
-        isVideoPost: json["isVideoPost"] ?? 0,
-        isAudioPost: json["isAudioPost"] ?? 0,
-        isFollowMessage: json["isFollowMessage"] ?? 0,
-        userName: json["userName"] ?? "",
-        image: json["image"] ?? '',
-        firstName: json["firstName"] ?? '',
-        lastName: json["lastName"] ?? '',
+        createdAt: json["createdAt"],
+        updatedAt: json["updatedAt"],
+        contestId: json["contestId"],
+        image: json["image"],
+        type: json["type"],
       );
 
   Map<String, dynamic> toMap() => {
         "notificationId": notificationId,
         "message": message,
-        "fromUser": fromUser,
         "toUser": toUser,
-        "isFollowMessage": isFollowMessage,
-        "userName": userName,
+        "createdAt": createdAt,
+        "updatedAt": updatedAt,
+        "contestId": contestId,
         "image": image,
-        "firstName": firstName,
-        "lastName": lastName,
+        "type": type,
       };
+
+  String getIcon() {
+    if (type == 'announcement') {
+      return 'ic_announce.png';
+    }
+    return 'ic_winner.png';
+  }
+
+  bool get isWinner => type == 'winner';
+
+  String getFormatedDate() {
+    var dateTime = DateFormat("yyyy-MM-ddTHH:mm:ssZ").parse(createdAt, true);
+    var dateLocal = dateTime.toLocal();
+    final DateFormat formatter = DateFormat("MMM dd, HH:mm a");
+    final String formatted = formatter.format(dateLocal);
+    return formatted;
+  }
 }

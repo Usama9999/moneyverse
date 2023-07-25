@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:talentogram/controllers/notification_trans_cont.dart';
 import 'package:talentogram/globals/adaptive_helper.dart';
 import 'package:talentogram/globals/widgets/appbars.dart';
+import 'package:talentogram/models/notification_model.dart';
 import 'package:talentogram/utils/app_colors.dart';
 import 'package:talentogram/utils/text_styles.dart';
 
@@ -12,74 +15,88 @@ class Notifications extends StatefulWidget {
 }
 
 class _NotificationsState extends State<Notifications> {
+  var controller = Get.put(NotTransController());
+
+  @override
+  void initState() {
+    controller.getNotification();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppBar(''),
-      body: ListView(
-          padding: EdgeInsets.symmetric(horizontal: wd(15)),
-          children: [
-            Text(
-              'NOTIFICATIONS',
-              style: subHeadingText(size: 25),
-            ),
-            SizedBox(
-              height: ht(30),
-            ),
-            ListView.separated(
-                separatorBuilder: (context, index) => const Divider(),
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: 10,
-                itemBuilder: (contest, index) {
-                  return Container(
-                      margin: const EdgeInsets.only(bottom: 10),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: AppColors.sparkliteblue4,
-                            child: Image.asset(
-                              index % 2 == 0
-                                  ? 'assets/images/ic_coin.png'
-                                  : 'assets/images/ic_money.png',
-                              height: 25,
+      body: GetBuilder<NotTransController>(builder: (value) {
+        return ListView(
+            padding: EdgeInsets.symmetric(horizontal: wd(15)),
+            children: [
+              Text(
+                'NOTIFICATIONS',
+                style: subHeadingText(size: 25),
+              ),
+              SizedBox(
+                height: ht(30),
+              ),
+              ListView.separated(
+                  separatorBuilder: (context, index) => const Divider(),
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: value.notifications.length,
+                  itemBuilder: (contest, index) {
+                    NotificationModel notification = value.notifications[index];
+                    return Container(
+                        margin: const EdgeInsets.only(bottom: 10),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: AppColors.sparkliteblue4,
+                              child: Image.asset(
+                                'assets/images/${notification.getIcon()}',
+                                height: 25,
+                                color: AppColors.sparkblue,
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                              child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      'Congratulations',
-                                      style: subHeadingText(
-                                          size: 18, color: AppColors.green),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Expanded(
+                                child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        notification.title,
+                                        style: subHeadingText(
+                                            size: 18,
+                                            color: notification.isWinner
+                                                ? AppColors.green
+                                                : AppColors.sparkblue),
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    '25 April, 2023',
-                                    style: regularText(
-                                        color: AppColors.ghostGrey, size: 10),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                'You have secured a position in a contest. Please tap here to see details',
-                                style: normalText(),
-                              )
-                            ],
-                          ))
-                        ],
-                      ));
-                })
-          ]),
+                                    Text(
+                                      notification.getFormatedDate(),
+                                      style: regularText(
+                                          color: AppColors.ghostGrey, size: 10),
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  notification.message,
+                                  style: normalText(),
+                                )
+                              ],
+                            ))
+                          ],
+                        ));
+                  })
+            ]);
+      }),
     );
   }
 }

@@ -10,12 +10,63 @@ import 'package:talentogram/models/failure.dart';
 import 'package:talentogram/models/notification_model.dart';
 import 'package:talentogram/models/result.dart';
 import 'package:talentogram/models/succes.dart';
+import 'package:talentogram/models/transaction_mode.dart';
 
 class UserRepo {
+  Future<Either<Failure, Success>> getTransactions(
+      HashMap<String, Object> requestParams) async {
+    try {
+      String url = 'transaction/';
+      String response = await ReqListener.fetchPost(
+          strUrl: url,
+          requestParams: requestParams,
+          mReqType: ReqType.get,
+          mParamType: ParamType.simple);
+      Result? mResponse =
+          Result(responseStatus: true, responseMessage: 'Success');
+      if (response.isNotEmpty) {
+        mResponse = Global.getData(response);
+      } else {
+        return Left(
+            Failure(DATA: "", MESSAGE: "No data found.", STATUS: false));
+      }
+
+      if (mResponse!.responseStatus == true) {
+        List<TransactionModel> transaction = [];
+        List result = mResponse.responseData as List;
+        transaction = result.map((e) => TransactionModel.fromMap(e)).toList();
+
+        Success mSuccess = Success(
+            responseStatus: mResponse.responseStatus,
+            responseData: transaction,
+            responseMessage: mResponse.responseMessage);
+
+        return Right(mSuccess);
+      }
+
+      if (!Global.checkNull(mResponse.responseMessage)) {
+        mResponse.responseMessage = AppAlert.ALERT_SERVER_NOT_RESPONDING;
+      }
+
+      return Left(Failure(
+          MESSAGE: mResponse.responseMessage,
+          STATUS: false,
+          DATA: mResponse.responseData != null
+              ? mResponse.responseData as Object
+              : ""));
+    } catch (e) {
+      log(e.toString());
+      return Left(Failure(
+          STATUS: false,
+          MESSAGE: AppAlert.ALERT_SERVER_NOT_RESPONDING,
+          DATA: ""));
+    }
+  }
+
   Future<Either<Failure, Success>> getNotifications(
       HashMap<String, Object> requestParams) async {
     try {
-      String url = 'users/getNotifications';
+      String url = 'notification/';
       String response = await ReqListener.fetchPost(
           strUrl: url,
           requestParams: requestParams,
