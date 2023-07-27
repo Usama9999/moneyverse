@@ -17,7 +17,7 @@ class NotTransController extends GetxController {
   FocusNode focusNodeSearch = FocusNode();
 
   Future<void> getTransactions() async {
-    loading = false;
+    loading = true;
     update();
     HashMap<String, Object> requestParams = HashMap();
 

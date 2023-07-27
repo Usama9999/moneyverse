@@ -48,13 +48,13 @@ class _NotificationsState extends State<Notifications> {
                     return Container(
                         margin: const EdgeInsets.only(bottom: 10),
                         child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             CircleAvatar(
                               backgroundColor: AppColors.sparkliteblue4,
                               child: Image.asset(
                                 'assets/images/${notification.getIcon()}',
                                 height: 25,
-                                color: AppColors.sparkblue,
                               ),
                             ),
                             const SizedBox(

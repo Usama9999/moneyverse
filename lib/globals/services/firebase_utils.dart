@@ -4,7 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:talentogram/globals/services/local_notifications_helper.dart';
 
 class FirebaseUtils {
-  Future<void> pushNotifications() async {
+  static Future<void> pushNotifications() async {
     // 2. Instantiate Firebase Messaging
     FirebaseMessaging messaging = FirebaseMessaging.instance;
     NotificationSettings settings = await messaging.requestPermission(
@@ -17,7 +17,7 @@ class FirebaseUtils {
     } else {
       log('User declined or has not accepted permission');
     }
-    messaging.subscribeToTopic('tycoo');
+    messaging.subscribeToTopic('contests');
     FirebaseMessaging.instance.getInitialMessage().then((message) {});
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       LocalNotificationChannel.display(message);

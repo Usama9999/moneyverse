@@ -59,10 +59,12 @@ class NotificationModel {
       };
 
   String getIcon() {
-    if (type == 'announcement') {
-      return 'ic_announce.png';
+    if (type == 'winner') {
+      return 'ic_winner.png';
+    } else if (type == 'deposit') {
+      return 'ic_money.png';
     }
-    return 'ic_winner.png';
+    return 'ic_announce.png';
   }
 
   bool get isWinner => type == 'winner';

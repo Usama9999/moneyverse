@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:talentogram/globals/app_views.dart';
 import 'package:talentogram/globals/constants.dart';
 import 'package:talentogram/globals/enum.dart';
+import 'package:talentogram/globals/services/firebase_utils.dart';
 
 class NavBarController extends GetxController {
   int currentIndex = 0;
@@ -65,5 +66,11 @@ class NavBarController extends GetxController {
             exit(0);
           }
         });
+  }
+
+  @override
+  void onInit() {
+    FirebaseUtils.pushNotifications();
+    super.onInit();
   }
 }

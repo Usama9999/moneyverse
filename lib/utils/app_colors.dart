@@ -21,7 +21,7 @@ class AppColors {
   static Color paymentContainer = HexColor("#F6F6F6");
 
   static Color colorWhite = Colors.white;
-  static const Color scaffoldBacground = Color(0xFFF8F6FD);
+  static const Color scaffoldBacground = Color(0xFFF1F5F9);
   static const Color sparkblue = Color(0xFF301883);
   static Color spark1blue = const Color(0xFF10082B);
   static Color spark2blue = const Color(0xFF201056);
