@@ -12,6 +12,7 @@ import 'package:talentogram/models/post_model.dart';
 import 'package:talentogram/screens/post_screens/post_comments_screen.dart';
 import 'package:talentogram/utils/text_styles.dart';
 
+import '../../screens/details_pages/user_detail.dart';
 import '../../utils/app_colors.dart';
 
 class UserPost extends StatefulWidget {
@@ -39,9 +40,9 @@ class _UserPostState extends State<UserPost> {
             mainAxisSize: MainAxisSize.min,
             children: [
               GestureDetector(
-                // onTap: () => Get.to(() => ExploreProfileScreen(
-                //       userId: widget.post.userId,
-                //     )),
+                onTap: () => Get.to(() => OtherUserScreen(
+                      userId: widget.post.userId,
+                    )),
                 child: Row(
                   children: [
                     ClipRRect(

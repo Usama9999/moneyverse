@@ -3,9 +3,8 @@ import 'package:get/get.dart';
 import 'package:talentogram/controllers/mainScreen_controllers/home_screen_controller.dart';
 import 'package:talentogram/controllers/mainScreen_controllers/navbar_controller.dart';
 import 'package:talentogram/globals/adaptive_helper.dart';
+import 'package:talentogram/screens/chat_view/all_chats.dart';
 import 'package:talentogram/utils/app_colors.dart';
-
-import '../../chat_screens/chat_screen.dart';
 
 Widget homeAppBar(HomeScreenController controller) {
   return Container(

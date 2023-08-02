@@ -402,4 +402,54 @@ class UserRepo {
           DATA: ""));
     }
   }
+
+  Future<Either<Failure, Success>> getUserProfile(
+      HashMap<String, Object> requestParams) async {
+    try {
+      String response = await ReqListener.fetchPost(
+          strUrl: 'users/UserProfile',
+          requestParams: requestParams,
+          mReqType: ReqType.get,
+          mParamType: ParamType.simple);
+      Result? mResponse =
+          Result(responseStatus: true, responseMessage: 'Success');
+      if (response == 'internet') {
+        return Left(Failure(
+            DATA: "",
+            MESSAGE: "Please check your internet connection",
+            STATUS: false));
+      }
+      if (response.isNotEmpty) {
+        mResponse = Global.getData(response);
+      } else {
+        return Left(
+            Failure(DATA: "", MESSAGE: "No data found.", STATUS: false));
+      }
+
+      if (mResponse!.responseStatus == true) {
+        log(mResponse.responseMessage);
+
+        Map result = mResponse.responseData as Map;
+        Success mSuccess = Success(
+            responseStatus: mResponse.responseStatus,
+            responseData: result,
+            responseMessage: mResponse.responseMessage);
+
+        return Right(mSuccess);
+      }
+
+      return Left(Failure(
+          MESSAGE: mResponse.responseMessage,
+          STATUS: false,
+          DATA: mResponse.responseData != null
+              ? mResponse.responseData as Object
+              : ""));
+    } catch (e) {
+      log(e.toString());
+      return Left(Failure(
+          STATUS: false,
+          MESSAGE: AppAlert.ALERT_SERVER_NOT_RESPONDING,
+          DATA: ""));
+    }
+  }
 }

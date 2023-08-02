@@ -55,6 +55,7 @@ dependencies:
   flutter_native_splash: ^2.2.9
   # google_fonts: ^4.0.5
   lottie: ^2.4.0
+  blur: ^3.0.0
   flutter_stripe: ^9.0.0
   screenshot: ^1.2.3
   salomon_bottom_bar: ^3.3.1

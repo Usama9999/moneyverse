@@ -1,11 +1,18 @@
+import 'dart:collection';
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:talentogram/globals/enum.dart';
 import 'package:talentogram/globals/global.dart';
+import 'package:talentogram/models/chat_model.dart';
 import 'package:talentogram/models/local_chat_model.dart';
-
-import '../../models/chat_model.dart';
-import '../../globals/services/database.dart';
+import 'package:talentogram/utils/firebase_database.dart';
+import 'package:talentogram/utils/login_details.dart';
 
 class ChatDetailController extends GetxController {
   bool mShowData = false;
@@ -19,6 +26,8 @@ class ChatDetailController extends GetxController {
   bool showSendButton = false;
 
   String imgProfilePic = '';
+  String id = '';
+  int userId = 0;
 
   changeText(String strvalue) {
     if (Global.checkNull(strvalue) && strvalue.trim().isNotEmpty) {
@@ -29,15 +38,15 @@ class ChatDetailController extends GetxController {
     update();
   }
 
-  sendMessage(String id, int userId) {
-    if (controllerMessage.text.trim().isNotEmpty) {
-      Database.addMessage(
+  sendMessage({List<String> files = const []}) {
+    if (controllerMessage.text.trim().isNotEmpty || files.isNotEmpty) {
+      FireDatabase.addMessage(
           id,
           ChatModel(
-              from: 86,
+              from: Get.find<UserDetail>().userId,
               to: userId,
               message: controllerMessage.text.trim(),
-              files: [],
+              files: files,
               timeStamp: Timestamp.now()));
     }
 
@@ -83,4 +92,114 @@ class ChatDetailController extends GetxController {
     '😙',
     '😚'
   ];
+
+  void showImagePicker(
+    context,
+  ) {
+    showModalBottomSheet(
+        backgroundColor: Colors.white,
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Wrap(
+              children: <Widget>[
+                ListTile(
+                    leading: const Icon(Icons.photo_library),
+                    title: const Text('Photo Gallery'),
+                    onTap: () async {
+                      await imgFromGallery2();
+                      Navigator.of(context).pop();
+                    }),
+                ListTile(
+                  leading: const Icon(Icons.photo_camera),
+                  title: const Text('Camera'),
+                  onTap: () async {
+                    await imgFromCamera2();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  imgFromCamera2() async {
+    try {
+      ImagePicker _picker = ImagePicker();
+      final pickedFile = await _picker.pickImage(
+        source: ImageSource.camera,
+      );
+      imageCompressor([pickedFile!]);
+    } catch (e) {
+      print('image picker error: $e');
+    }
+  }
+
+  imgFromGallery2() async {
+    try {
+      ImagePicker _picker = ImagePicker();
+      final pickedFile = await _picker.pickMultiImage();
+      imageCompressor(pickedFile);
+    } catch (e) {
+      print('image picker error: $e');
+    }
+  }
+
+  var loading = false;
+  imageCompressor(List<XFile> selectedImage) async {
+    try {
+      loading = true;
+      update();
+
+      List<File> files = [];
+      for (int i = 0; i < selectedImage.length; i++) {
+        File compressedFile = await FlutterNativeImage.compressImage(
+            selectedImage[i].path,
+            quality: 30,
+            percentage: 50);
+
+        files.add(compressedFile);
+      }
+
+      uploadImage(files);
+    } catch (e) {
+      Future.error(e);
+      return;
+    }
+  }
+
+  Future<void> uploadImage(List<File> files) async {
+    // log(files.length.toString());
+    // if (files.isEmpty) {
+    //   loading = false;
+    //   update();
+    //   return;
+    // }
+
+    // HashMap<String, String> requestParams = HashMap();
+    // HashMap<String, String> requestParamsImg = HashMap();
+    // List<String> paths = [];
+    // for (int i = 0; i < files.length; i++) {
+    //   paths.add(files[i].path);
+    // }
+
+    // var res = await UserRepo()
+    //     .uploadImages(requestParams, requestParamsImg, images: paths);
+
+    // res.fold((failure) {
+    //   Global.showToastAlert(
+    //       context: Get.overlayContext!,
+    //       strTitle: "",
+    //       strMsg: "Something went wrong! Try again",
+    //       toastType: TOAST_TYPE.toastError);
+    //   loading = false;
+    //   update();
+    // }, (mResult) async {
+    //   List<String> images = mResult.responseData as List<String>;
+    //   sendMessage(files: images);
+    //   loading = false;
+    //   update();
+    // });
+  }
 }

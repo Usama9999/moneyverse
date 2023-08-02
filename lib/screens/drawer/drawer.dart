@@ -5,9 +5,11 @@ import 'package:talentogram/globals/adaptive_helper.dart';
 import 'package:talentogram/globals/container_properties.dart';
 import 'package:talentogram/globals/network_image.dart';
 import 'package:talentogram/globals/widgets/dialogues/delete_acc.dart';
+import 'package:talentogram/screens/chat_view/chat_room.dart';
 import 'package:talentogram/screens/drawer/items/invite_earn.dart';
 import 'package:talentogram/screens/drawer/items/notifications.dart';
 import 'package:talentogram/utils/app_colors.dart';
+import 'package:talentogram/utils/firebase_database.dart';
 import 'package:talentogram/utils/login_details.dart';
 import 'package:talentogram/utils/text_styles.dart';
 
@@ -60,6 +62,18 @@ class CustomDrawer extends StatelessWidget {
                   }, color: AppColors.orange, size: 9),
                   optionItem("Help", () {
                     Get.back();
+
+                    FireDatabase.createSupportRoom().then((id) {
+                      if (id.isNotEmpty) {
+                        Get.to(() => ChatDetailScreen(
+                              roomId: id['room'],
+                              userId: id['id'],
+                              image: '',
+                              name: 'Support',
+                              supportRoom: true,
+                            ));
+                      }
+                    });
                   }, color: AppColors.orange, size: 9),
                   divider(),
                   optionItem("Sign Out", () {

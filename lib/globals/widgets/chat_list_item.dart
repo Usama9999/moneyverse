@@ -29,7 +29,7 @@ class ChatListItem extends StatelessWidget {
                 children: [
                   Container(
                       decoration: BoxDecoration(
-                        color: AppColors.primaryColor,
+                        color: AppColors.ghostGrey,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(30),
                           topRight: Radius.circular(30),
@@ -43,19 +43,11 @@ class ChatListItem extends StatelessWidget {
                         children: [
                           Text(
                             mChatModel.message,
-                            style: regularText(size: 16)
-                                .copyWith(color: Colors.white),
+                            style: normalText(size: 15)
+                                .copyWith(color: Colors.black),
                           ),
                         ],
                       )),
-                  // Visibility(
-                  //     visible: mChatModel.files.isNotEmpty ? true : false,
-                  //     child: ImageCollapse(
-                  //       appBarColor: AppColors.primaryColor,
-                  //       imageUrls: mChatModel.files as List<String>,
-                  //       fadingColorCollapse: AppColors.primaryColor,
-                  //       titleGallery: "Chats",
-                  //     )),
                 ],
               ),
             )),
@@ -76,7 +68,7 @@ class ChatListItem extends StatelessWidget {
                 children: [
                   Container(
                       decoration: BoxDecoration(
-                        color: AppColors.orangeColor,
+                        color: AppColors.sparkliteblue4,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(30),
                           topRight: Radius.circular(30),
@@ -90,22 +82,11 @@ class ChatListItem extends StatelessWidget {
                         children: [
                           Text(
                             mChatModel.message,
-                            style: regularText(size: 16)
-                                .copyWith(color: Colors.white),
+                            style: normalText(size: 15)
+                                .copyWith(color: Colors.black),
                           ),
                         ],
                       )),
-                  // Visibility(
-                  //     visible: mChatModel.files.isNotEmpty ? true : false,
-                  //     child: ImageCollapse(
-                  //       appBarColor: AppColors.primaryColor,
-                  //       backgroundImageView: const BoxDecoration(
-                  //         borderRadius: BorderRadius.all(Radius.circular(5)),
-                  //       ),
-                  //       imageUrls: mChatModel.files as List<String>,
-                  //       fadingColorCollapse: AppColors.primaryColor,
-                  //       titleGallery: "Chats",
-                  //     )),
                 ],
               ),
             )),

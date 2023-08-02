@@ -104,7 +104,7 @@ Widget backArrowAppBar(String title,
   );
 }
 
-AppBar customAppBar(String title,
+AppBar customAppBar(dynamic title,
     {bool isCentered = false,
     Color? color,
     leading = true,
@@ -113,10 +113,13 @@ AppBar customAppBar(String title,
     List<Widget> action = const [],
     TextStyle? style}) {
   return AppBar(
-    title: Text(
-      title,
-      style: style ?? subHeadingText(size: 18, color: AppColors.primaryColor),
-    ),
+    title: title is String
+        ? Text(
+            title,
+            style: style ??
+                subHeadingText(size: 18, color: AppColors.primaryColor),
+          )
+        : title,
     titleTextStyle: regularText(size: 18),
     elevation: 0,
     automaticallyImplyLeading: leading,
