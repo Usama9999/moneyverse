@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:talentogram/globals/adaptive_helper.dart';
 import 'package:talentogram/globals/container_properties.dart';
 import 'package:talentogram/utils/app_colors.dart';
 import 'package:talentogram/utils/text_styles.dart';
@@ -16,14 +17,14 @@ Widget customTextFiled(TextEditingController controller, FocusNode focusNode,
     bool enabled = true,
     Color? color = Colors.white,
     dynamic onTap,
-    double? height = 44,
+    double? height = 55,
     TextAlign align = TextAlign.start,
     double padding = 10,
     int? maxLength,
     TextDirection? textDirection = TextDirection.ltr,
     dynamic validation}) {
   return Container(
-    height: 55,
+    height: ht(height!),
     width: double.infinity,
     decoration: ContainerProperties.simpleDecoration(color: color),
     child: TextFormField(

@@ -16,10 +16,10 @@ class UserDetail extends GetxController {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String token = result['token'] ?? '';
     String image = result['user']['image'] ?? '';
-    String email = result['user']['email'];
-    String firstName = result['user']['firstName'];
-    String lastName = result['user']['lastName'];
-    int id = result['user']['userId'];
+    String email = result['user']['email'] ?? '';
+    String firstName = result['user']['firstName'] ?? '';
+    String lastName = result['user']['lastName'] ?? '';
+    int id = result['user']['userId'] ?? 0;
     await sharedPreferences.setString(SharedPrefKey.KEY_ACCESS_TOKEN, token);
     await sharedPreferences.setString('name', '$firstName $lastName');
     await sharedPreferences.setInt(

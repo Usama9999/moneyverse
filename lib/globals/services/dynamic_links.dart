@@ -24,11 +24,11 @@ class DynamicLinksApi {
 
   Future<String> createShareLink() async {
     final DynamicLinkParameters dynamicLinkParameters = DynamicLinkParameters(
-      uriPrefix: 'https://talentogram.page.link',
+      uriPrefix: 'https://moneyverse.page.link',
       link: Uri.parse(
-          'https://talentogram.com/invite?email=${Get.find<UserDetail>().email}'),
+          'https://moneyverse.com/invite?email=${Get.find<UserDetail>().email}'),
       androidParameters: const AndroidParameters(
-          packageName: 'com.example.talentogram', minimumVersion: 0),
+          packageName: 'com.moneyverse.app', minimumVersion: 0),
       socialMetaTagParameters: const SocialMetaTagParameters(
         title: 'Signup to MoneyVerse using this link',
         description: 'Participate in excitig contests and win real cash prices',
@@ -48,10 +48,10 @@ class DynamicLinksApi {
     String userId,
   ) async {
     final DynamicLinkParameters dynamicLinkParameters = DynamicLinkParameters(
-      uriPrefix: 'https://talentogram.page.link',
-      link: Uri.parse('https://talentogram.com/profilelink?userId=$userId'),
+      uriPrefix: 'https://moneyverse.page.link',
+      link: Uri.parse('https://moneyverse.com/profilelink?userId=$userId'),
       androidParameters: const AndroidParameters(
-          packageName: 'com.example.talentogram', minimumVersion: 0),
+          packageName: 'com.moneyverse.app', minimumVersion: 0),
       socialMetaTagParameters: SocialMetaTagParameters(
         title: name,
         description: 'Check this profile',

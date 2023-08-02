@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:talentogram/controllers/mainScreen_controllers/navbar_controller.dart';
+import 'package:talentogram/controllers/mainScreen_controllers/profile_controller.dart';
 import 'package:talentogram/globals/adaptive_helper.dart';
 import 'package:talentogram/globals/container_properties.dart';
 import 'package:talentogram/globals/extensions/color_extensions.dart';
@@ -25,35 +26,46 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  var cont = Get.put(ProfileController());
+  @override
+  void initState() {
+    cont.getCompletionStatus();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      appBar: customAppBar(''),
-      body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: wd(15)),
-        children: [
-          Text(
-            'Profile',
-            style: subHeadingText(size: 25),
-          ),
-          SizedBox(
-            height: ht(50),
-          ),
-          _verifyEditProfilePic(),
-          SizedBox(
-            height: ht(25),
-          ),
-          profileStatuses(),
-          const SizedBox(
-            height: 30,
-          ),
-          profileComplete(),
-          const SizedBox(
-            height: 100,
-          )
-        ],
-      ),
+      appBar: customAppBar('', isMain: true),
+      body: GetBuilder<ProfileController>(
+          init: ProfileController(),
+          builder: (value) {
+            return ListView(
+              padding: EdgeInsets.symmetric(horizontal: wd(15)),
+              children: [
+                Text(
+                  'Profile',
+                  style: subHeadingText(size: 25),
+                ),
+                SizedBox(
+                  height: ht(50),
+                ),
+                _verifyEditProfilePic(),
+                SizedBox(
+                  height: ht(25),
+                ),
+                profileStatuses(),
+                const SizedBox(
+                  height: 30,
+                ),
+                if (!value.profileLoading) profileComplete(),
+                const SizedBox(
+                  height: 100,
+                )
+              ],
+            );
+          }),
     );
   }
 
@@ -298,7 +310,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: CircularPercentIndicator(
                   radius: 44.0,
                   lineWidth: 8.5,
-                  percent: 0.6,
+                  percent: cont.getComppletePrecentage().toDouble() / 100,
                   center: CircularPercentIndicator(
                     radius: 35.0,
                     lineWidth: 5.0,
@@ -308,7 +320,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(20.0),
                           child: Text(
-                            '20%',
+                            "${cont.getComppletePrecentage()}%",
                             style: headingText(size: 13),
                           ),
                         )),
@@ -331,16 +343,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'You have completed 10% of your Profile.',
+                        'You have completed ${cont.getComppletePrecentage()}% of your Profile.',
                         style: regularText(color: AppColors.sparkblue),
                       ),
                       const SizedBox(
                         height: 5,
                       ),
                       Text(
-                        'Please complete your profile so we can pay you when its time. ',
+                        cont.getComppletePrecentage() != 100
+                            ? 'Please complete your profile so we can pay you when its time. '
+                            : 'Your profile is 100% completed. Thank you for your cooperation',
                         style: normalText(color: AppColors.textGrey),
-                      ),
+                      )
                     ],
                   ),
                 ),
@@ -354,8 +368,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: SizedBox(
                 width: 120,
                 child: CustomButton(
-                  label: 'COMPLETE',
-                  onPress: () {},
+                  enable: cont.getComppletePrecentage() != 100,
+                  label: cont.getComppletePrecentage() != 100
+                      ? 'COMPLETE'
+                      : 'COMPLETED',
+                  onPress: () {
+                    cont.checkCompletion();
+                  },
                   buttonHight: 40,
                   textSize: 16,
                 )))

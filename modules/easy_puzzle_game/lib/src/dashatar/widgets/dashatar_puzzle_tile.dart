@@ -132,7 +132,7 @@ class MyDashatarPuzzleTileState extends State<MyDashatarPuzzleTile>
                     : null,
                 icon: ServerImage(
                   imgPath:
-                      '${EasyPuzzleGameController.of(context).puzzleBlockFolderPath}/${widget.tile.value.toString()}.png',
+                      '${EasyPuzzleGameController.of(context).puzzleBlockFolderPath}${widget.tile.value.toString()}.png',
                 ),
               ),
             ),

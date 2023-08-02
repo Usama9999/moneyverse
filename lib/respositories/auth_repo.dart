@@ -144,6 +144,34 @@ class AuthRepo {
     }
   }
 
+  saveData(Result mResponse) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    Map result = mResponse.responseData as Map;
+    String token = result['token'] ?? '';
+    String image = result['user']['image'] ?? '';
+    String email = result['user']['email'];
+    String bio = result['user']['bio'] ?? '';
+    String webiste = result['user']['website'] ?? '';
+    String firstName = result['user']['firstName'];
+    String lastName = result['user']['lastName'];
+    int id = result['user']['userId'];
+    String username = result['user']['userName'] ?? '';
+    await sharedPreferences.setString(SharedPrefKey.KEY_ACCESS_TOKEN, token);
+    if (firstName == lastName) {
+      await sharedPreferences.setString('name', firstName);
+    } else {
+      await sharedPreferences.setString('name', '$firstName $lastName');
+    }
+    await sharedPreferences.setInt(SharedPrefKey.KEY_USER_ID, id);
+    await sharedPreferences.setString(SharedPrefKey.KEY_USER_IMAGE, image);
+    await sharedPreferences.setBool(SharedPrefKey.KEY_IS_LOGIN, true);
+    await sharedPreferences.setString('userName', username);
+    await sharedPreferences.setString('bio', bio);
+    await sharedPreferences.setString('website', webiste);
+    await sharedPreferences.setString('email', email);
+    Get.find<UserDetail>().getData();
+  }
+
   Future<Either<Failure, Success>> login(
       HashMap<String, Object> requestParams) async {
     try {
@@ -163,33 +191,8 @@ class AuthRepo {
 
       if (mResponse!.responseStatus == true) {
         log(mResponse.responseMessage);
-        SharedPreferences sharedPreferences =
-            await SharedPreferences.getInstance();
-        Map result = mResponse.responseData as Map;
-        String token = result['token'] ?? '';
-        String image = result['user']['image'] ?? '';
-        String email = result['user']['email'];
-        String bio = result['user']['bio'] ?? '';
-        String webiste = result['user']['website'] ?? '';
-        String firstName = result['user']['firstName'];
-        String lastName = result['user']['lastName'];
-        int id = result['user']['userId'];
-        String username = result['user']['userName'] ?? '';
-        await sharedPreferences.setString(
-            SharedPrefKey.KEY_ACCESS_TOKEN, token);
-        if (firstName == lastName) {
-          await sharedPreferences.setString('name', firstName);
-        } else {
-          await sharedPreferences.setString('name', '$firstName $lastName');
-        }
-        await sharedPreferences.setInt(SharedPrefKey.KEY_USER_ID, id);
-        await sharedPreferences.setString(SharedPrefKey.KEY_USER_IMAGE, image);
-        await sharedPreferences.setBool(SharedPrefKey.KEY_IS_LOGIN, true);
-        await sharedPreferences.setString('userName', username);
-        await sharedPreferences.setString('bio', bio);
-        await sharedPreferences.setString('website', webiste);
-        await sharedPreferences.setString('email', email);
-        Get.find<UserDetail>().getData();
+        saveData(mResponse);
+
         Success mSuccess = Success(
             responseStatus: mResponse.responseStatus,
             responseData: {},

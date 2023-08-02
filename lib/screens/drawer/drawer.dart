@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:talentogram/controllers/mainScreen_controllers/navbar_controller.dart';
 import 'package:talentogram/globals/adaptive_helper.dart';
 import 'package:talentogram/globals/container_properties.dart';
 import 'package:talentogram/globals/network_image.dart';
@@ -42,6 +43,7 @@ class CustomDrawer extends StatelessWidget {
                   divider(),
                   optionItem("Profile", () {
                     Get.back();
+                    Get.find<NavBarController>().changeTab(4);
                   }),
                   optionItem("Transactions", () {
                     Get.back();

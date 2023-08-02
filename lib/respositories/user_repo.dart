@@ -63,6 +63,99 @@ class UserRepo {
     }
   }
 
+  Future<Either<Failure, Success>> buyTokens(
+      HashMap<String, Object> requestParams) async {
+    try {
+      String url = 'transaction/buyTokens';
+      String response = await ReqListener.fetchPost(
+          strUrl: url,
+          requestParams: requestParams,
+          mReqType: ReqType.post,
+          mParamType: ParamType.json);
+      Result? mResponse =
+          Result(responseStatus: true, responseMessage: 'Success');
+      if (response.isNotEmpty) {
+        mResponse = Global.getData(response);
+      } else {
+        return Left(
+            Failure(DATA: "", MESSAGE: "No data found.", STATUS: false));
+      }
+
+      if (mResponse!.responseStatus == true) {
+        Success mSuccess = Success(
+            responseStatus: mResponse.responseStatus,
+            responseData: {},
+            responseMessage: mResponse.responseMessage);
+
+        return Right(mSuccess);
+      }
+
+      if (!Global.checkNull(mResponse.responseMessage)) {
+        mResponse.responseMessage = AppAlert.ALERT_SERVER_NOT_RESPONDING;
+      }
+
+      return Left(Failure(
+          MESSAGE: mResponse.responseMessage,
+          STATUS: false,
+          DATA: mResponse.responseData != null
+              ? mResponse.responseData as Object
+              : ""));
+    } catch (e) {
+      log(e.toString());
+      return Left(Failure(
+          STATUS: false,
+          MESSAGE: AppAlert.ALERT_SERVER_NOT_RESPONDING,
+          DATA: ""));
+    }
+  }
+
+  Future<Either<Failure, Success>> getMyData(
+      HashMap<String, Object> requestParams) async {
+    try {
+      String url = 'users/myData';
+      String response = await ReqListener.fetchPost(
+          strUrl: url,
+          requestParams: requestParams,
+          mReqType: ReqType.get,
+          mParamType: ParamType.json);
+      Result? mResponse =
+          Result(responseStatus: true, responseMessage: 'Success');
+      if (response.isNotEmpty) {
+        mResponse = Global.getData(response);
+      } else {
+        return Left(
+            Failure(DATA: "", MESSAGE: "No data found.", STATUS: false));
+      }
+      List res = mResponse!.responseData as List;
+
+      if (mResponse!.responseStatus == true) {
+        Success mSuccess = Success(
+            responseStatus: mResponse.responseStatus,
+            responseData: res.isEmpty ? {} : res[0],
+            responseMessage: mResponse.responseMessage);
+
+        return Right(mSuccess);
+      }
+
+      if (!Global.checkNull(mResponse.responseMessage)) {
+        mResponse.responseMessage = AppAlert.ALERT_SERVER_NOT_RESPONDING;
+      }
+
+      return Left(Failure(
+          MESSAGE: mResponse.responseMessage,
+          STATUS: false,
+          DATA: mResponse.responseData != null
+              ? mResponse.responseData as Object
+              : ""));
+    } catch (e) {
+      log(e.toString());
+      return Left(Failure(
+          STATUS: false,
+          MESSAGE: AppAlert.ALERT_SERVER_NOT_RESPONDING,
+          DATA: ""));
+    }
+  }
+
   Future<Either<Failure, Success>> getNotifications(
       HashMap<String, Object> requestParams) async {
     try {

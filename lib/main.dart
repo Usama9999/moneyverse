@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:talentogram/globals/constants.dart';
 import 'package:talentogram/screens/main_screens/bottom_bar_screen.dart';
 import 'package:talentogram/globals/adaptive_helper.dart';
 import 'package:talentogram/globals/bindings/initial_binding.dart';
@@ -16,6 +18,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   var loginDetail = Get.put(UserDetail());
+  Stripe.publishableKey = Constants.stripePublishKey;
   LocalNotificationChannel.initializer();
   loginDetail.getData();
   bool loggedIn = await loginDetail.isLogin();

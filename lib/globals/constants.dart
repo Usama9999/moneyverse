@@ -73,6 +73,10 @@ class PARAMS {
 }
 
 class Constants {
+  static const stripeKey =
+      "sk_test_51L9OUFHYMywy7Uqrni2FavQa5IFG6tEvBuyfyV7VERpAzd8bULaGx27aDGDdz1hVkfwqY91KNdVxJt1C1PkBN2H800tyq9c8P2";
+  static const stripePublishKey =
+      "pk_test_51L9OUFHYMywy7UqrbREXzmBj470OQskl4oqvdbc4YLsrU5L96GVEOMTKTP2zAl8P5QC8OF2j9mnLv5SsGJPEQgRa00Py746Mtn";
   static const String APP_NAME = "Otobucks";
   static String strTokenType = "Bearer";
   static String STATUS = "STATUS";

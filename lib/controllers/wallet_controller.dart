@@ -1,51 +1,120 @@
+import 'dart:collection';
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart';
+import 'package:talentogram/globals/widgets/dialogues/manager.dart';
+import 'package:talentogram/respositories/user_repo.dart';
+
+import '../globals/constants.dart';
 
 class WalletController extends GetxController {
-  int currentTab = 0;
+  bool loading = false;
 
-  bool isSaveCard = false;
-
-  List<String> cashPrices = ['100', '200', '300', '500', '1k', '5k'];
-  List<Tab> profileTabs = [
-    const Tab(
-      text: 'Coin',
-    ),
-    const Tab(
-      text: 'Live revenue',
-    ),
-    const Tab(
-      text: 'Cash',
-    ),
+  List<Map> offers = [
+    {'tokens': 50, 'amount': 300},
+    {'tokens': 100, 'amount': 500},
+    {'tokens': 200, 'amount': 750},
+    {'tokens': 300, 'amount': 1100},
+    {'tokens': 500, 'amount': 2100},
   ];
-  List<Tab> cardTabs = [
-    const Tab(
-      text: 'Deposit',
-    ),
-    const Tab(
-      text: 'Withdraw',
-    ),
-  ];
+  var paymentIntent;
+  Future<void> makePayment(Map offer) async {
+    try {
+      //STEP 1: Create Payment Intent
+      paymentIntent = await createPaymentIntent(offer['amount'], 'USD');
 
-  late TabController tabController;
-
-  TextEditingController controllerCardNumber = TextEditingController();
-  TextEditingController controllerCVC = TextEditingController();
-  TextEditingController controllerHolder = TextEditingController();
-  TextEditingController controllerExpiry = TextEditingController();
-
-  FocusNode focusNodeCardNumber = FocusNode();
-  FocusNode focusNodeCVC = FocusNode();
-  FocusNode focusNodeHolder = FocusNode();
-  FocusNode focusNodeExpiry = FocusNode();
-
-  void changeTab(int index) {
-    currentTab = index;
-    update();
+      //STEP 2: Initialize Payment Sheet
+      await Stripe.instance
+          .initPaymentSheet(
+              paymentSheetParameters: SetupPaymentSheetParameters(
+                  paymentIntentClientSecret: paymentIntent![
+                      'client_secret'], //Gotten from payment intent
+                  style: ThemeMode.light,
+                  merchantDisplayName: 'Ikay'))
+          .then((value) {
+        displayPaymentSheet(offer);
+      }).catchError((err) {
+        DialogueManager.showInfoDialogue(('Something went wrong!. try again'));
+      });
+    } catch (err) {
+      DialogueManager.showInfoDialogue(('Something went wrong!. try again'));
+    }
   }
 
-  void changeSaveCard() {
-    isSaveCard = isSaveCard ? false : true;
+  createPaymentIntent(int amount, String currency) async {
+    try {
+      //Request body
+      Map<String, dynamic> body = {
+        'amount': (amount * 100).toString(),
+        'currency': 'PKR',
+      };
+      loading = true;
+      update();
+      //Make post request to Stripe
+      var response = await post(
+        Uri.parse('https://api.stripe.com/v1/payment_intents'),
+        headers: {
+          'Authorization': 'Bearer ${Constants.stripeKey}',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: body,
+      );
+      loading = false;
+      update();
+      log(response.body);
+      if (response.body.contains('error') &&
+          !response.body.contains('client_secret')) {
+        DialogueManager.showInfoDialogue(
+            jsonDecode(response.body)['error']['message']);
+      }
+      return jsonDecode(response.body);
+    } catch (err) {
+      loading = false;
+      update();
+      throw Exception(err.toString());
+    }
+  }
+
+  displayPaymentSheet(Map offer) async {
+    await Stripe.instance.presentPaymentSheet().then((value) async {
+      paymentIntent = null;
+      HashMap<String, Object> requestParams = HashMap();
+      requestParams['tokens'] = offer['tokens'];
+      loading = true;
+      update();
+      var res = await UserRepo().buyTokens(requestParams);
+      res.fold((failure) {}, (mResult) {
+        DialogueManager.showInfoDialogue(
+            "You have successfully purchased ${offer['tokens']}. Tokens. We wish you good luck for your future contests.");
+        userData['balance'] += offer['tokens'];
+      });
+      loading = false;
+      update();
+    }).onError((error, stackTrace) {
+      loading = false;
+      update();
+      DialogueManager.showInfoDialogue("The payment process is cancelled.");
+      throw Exception(error);
+    });
+  }
+
+  Map userData = {"earnings": 0, "balance": 0};
+  getTokens() async {
+    HashMap<String, Object> requestParams = HashMap();
+    loading = true;
+    update();
+    var res = await UserRepo().getMyData(requestParams);
+    res.fold((failure) {
+      Get.back();
+      DialogueManager.showInfoDialogue(('Something went wrong!. try again'));
+    }, (mResult) {
+      userData = mResult.responseData as Map;
+    });
+    loading = false;
     update();
   }
 }

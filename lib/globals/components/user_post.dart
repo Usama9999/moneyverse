@@ -75,10 +75,8 @@ class _UserPostState extends State<UserPost> {
                       ),
                     ),
                     ThreeDotIcon(onTap: () {
-                      customBottomSheet(context, ["Report", "Share"], -1,
-                          (val) {
-                        String text = "";
-
+                      customBottomSheet(context, ["Report"], -1, (val) {
+                        String text = "Reported successfully";
                         Global.showToastAlert(
                           context: Get.overlayContext!,
                           strTitle: "ok",

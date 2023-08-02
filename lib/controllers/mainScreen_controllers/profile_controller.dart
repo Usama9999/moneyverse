@@ -5,10 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:talentogram/controllers/mainScreen_controllers/navbar_controller.dart';
 import 'package:talentogram/globals/enum.dart';
 import 'package:talentogram/globals/global.dart';
 import 'package:talentogram/respositories/auth_repo.dart';
 import 'package:talentogram/respositories/profile_repo.dart';
+import 'package:talentogram/respositories/user_repo.dart';
+import 'package:talentogram/screens/main_screens/profile/bank_details_screen.dart';
+import 'package:talentogram/screens/main_screens/profile/edit_profile.dart';
 import 'package:talentogram/screens/main_screens/profile/email_otp.dart';
 import 'package:talentogram/utils/login_details.dart';
 
@@ -167,7 +171,52 @@ class ProfileController extends GetxController {
 
   Future<void> verifyUser() async {
     HashMap<String, Object> requestParams = HashMap();
-
     await ProfileRepo().verifyUser(requestParams);
+  }
+
+  bool profileLoading = false;
+
+  Map userData = {"earnings": 0, "balance": 0, 'detailId': null};
+  getCompletionStatus() async {
+    profileLoading = true;
+    update();
+    HashMap<String, Object> requestParams = HashMap();
+    var res = await UserRepo().getMyData(requestParams);
+    res.fold((failure) {}, (mResult) {
+      profileLoading = false;
+      userData = mResult.responseData as Map;
+      update();
+    });
+  }
+
+  int getComppletePrecentage() {
+    if (userData['detailId'] == null && !Get.find<UserDetail>().isVerified) {
+      return 10;
+    } else if (userData['detailId'] == null ||
+        !Get.find<UserDetail>().isVerified) {
+      return 55;
+    } else {
+      return 100;
+    }
+  }
+
+  void checkCompletion() {
+    if (userData['detailId'] == null) {
+      Get.find<NavBarController>().changeTab(0);
+      Get.to(() => const BankDetailScreen());
+      Global.showToastAlert(
+          context: Get.overlayContext!,
+          strTitle: "",
+          strMsg: 'Please provide your bank details.',
+          toastType: TOAST_TYPE.toastInfo);
+    } else if (!Get.find<UserDetail>().isEarningVisible) {
+      Get.find<NavBarController>().changeTab(0);
+      Get.to(() => const EditProfile());
+      Global.showToastAlert(
+          context: Get.overlayContext!,
+          strTitle: "",
+          strMsg: 'Please verify your email.',
+          toastType: TOAST_TYPE.toastInfo);
+    }
   }
 }

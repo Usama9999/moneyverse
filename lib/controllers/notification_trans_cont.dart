@@ -35,7 +35,7 @@ class NotTransController extends GetxController {
   }
 
   Future<void> getNotification() async {
-    loading = false;
+    loading = true;
     update();
     HashMap<String, Object> requestParams = HashMap();
 

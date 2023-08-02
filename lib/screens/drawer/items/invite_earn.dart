@@ -26,7 +26,9 @@ class InviteFriendsState extends State<InviteFriends> {
 
   getLink() async {
     codeController.text = await DynamicLinksApi().createShareLink();
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -101,12 +103,8 @@ class InviteFriendsState extends State<InviteFriends> {
                               padding: EdgeInsets.symmetric(horizontal: wd(30)),
                               child: customTextFiled(codeController, codeNode,
                                   readOnly: true,
-                                  maxLength: 10,
                                   align: TextAlign.center,
                                   hint: 'Creating Link... Please wait'),
-                            ),
-                            SizedBox(
-                              height: ht(24),
                             ),
                           ],
                         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:talentogram/controllers/detail_pages_controllers/other_user_profile.dart';
 import 'package:talentogram/controllers/mainScreen_controllers/stats_controller.dart';
 import 'package:talentogram/globals/adaptive_helper.dart';
 import 'package:talentogram/globals/app_views.dart';
@@ -9,21 +10,19 @@ import 'package:talentogram/globals/widgets/appbars.dart';
 import 'package:talentogram/utils/app_colors.dart';
 import 'package:talentogram/utils/text_styles.dart';
 
-import 'line_chart.dart';
-
-class MyStats extends StatefulWidget {
-  const MyStats({super.key});
+class OtherUserScreen extends StatefulWidget {
+  const OtherUserScreen({super.key});
 
   @override
-  State<MyStats> createState() => _MyStatsState();
+  State<OtherUserScreen> createState() => _OtherUserScreenState();
 }
 
-class _MyStatsState extends State<MyStats> {
-  var cont = Get.put(MyStatsController());
+class _OtherUserScreenState extends State<OtherUserScreen> {
+  var cont = Get.put(OtherUserProfileController());
 
   @override
   void initState() {
-    cont.getMyStats();
+    // cont.getMyStats();
     super.initState();
   }
 
@@ -91,7 +90,7 @@ class _MyStatsState extends State<MyStats> {
                 SizedBox(
                   height: ht(30),
                 ),
-                SizedBox(height: ht(250), child: LineChartCustom()),
+                // SizedBox(height: ht(250), child: LineChartCustom()),
               ],
             ),
             AppViews.loadingScreen(value.loading)

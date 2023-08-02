@@ -36,9 +36,9 @@ class _MyHomePageState extends State<PuzzleGame> {
               controller.addResponse(widget.contestModel.contestId);
             },
             puzzleFullImg:
-                'https://github.com/mhanzla80/easy_puzzle_game/raw/master/puzzle.png',
+                'https://res.cloudinary.com/dog87xrmc/profiles/${widget.contestModel.contestId}.png',
             puzzleBlockFolderPath:
-                'https://github.com/mhanzla80/easy_puzzle_game/raw/master/blocks',
+                'https://res.cloudinary.com/dog87xrmc/profiles/${widget.contestModel.contestId}_',
             puzzleRowColumn: 4,
           ),
           GetBuilder<GameContestController>(builder: (controller) {

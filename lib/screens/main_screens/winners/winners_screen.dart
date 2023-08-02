@@ -29,9 +29,7 @@ class _WinnersScreenState extends State<WinnersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(
-        '',
-      ),
+      appBar: customAppBar('', isMain: true),
       body: Stack(
         children: [
           ListView(
