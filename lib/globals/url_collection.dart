@@ -3,5 +3,5 @@ class RequestBuilder {
   static const String liveUrl =
       "http://ec2-18-200-34-48.eu-west-1.compute.amazonaws.com:3000/v1/";
   static const String localUrl = 'http://192.168.100.126:3000/v1/';
-  static const String useUrl = localUrl;
+  static const String useUrl = liveUrl;
 }
