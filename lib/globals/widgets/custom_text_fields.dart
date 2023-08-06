@@ -24,7 +24,6 @@ Widget customTextFiled(TextEditingController controller, FocusNode focusNode,
     TextDirection? textDirection = TextDirection.ltr,
     dynamic validation}) {
   return Container(
-    height: ht(height!),
     width: double.infinity,
     decoration: ContainerProperties.simpleDecoration(color: color),
     child: TextFormField(

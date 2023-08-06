@@ -36,6 +36,38 @@ class WinnerController extends GetxController {
       update();
     });
   }
+
+  ///////////////////////////////////
+  ///
+  /// Home screen work
+  ///////////////////////////////////
+  bool winnerDetailsLoader = false;
+  Map winnerDetails = {};
+  bool error = false;
+  Future<void> getWinnerDetails(int userId, int contestId, String type) async {
+    winnerDetailsLoader = true;
+    error = false;
+    update();
+    HashMap<String, Object> requestParams = HashMap();
+    requestParams['userId'] = userId;
+    requestParams['contestId'] = contestId;
+    requestParams['type'] = type;
+    var contestRes = await ContestRepo().getWinnerDetails(requestParams);
+
+    contestRes.fold((failure) {
+      error = true;
+      winnerDetailsLoader = false;
+      update();
+    }, (mResult) {
+      List data = mResult.responseData as List;
+      if (data.isNotEmpty) {
+        winnerDetails = data.first;
+        print(winnerDetails);
+      }
+      winnerDetailsLoader = false;
+      update();
+    });
+  }
   ///////////////////////////////////
   ///
   /// Particiapating

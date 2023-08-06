@@ -26,7 +26,7 @@ class DynamicLinksApi {
     final DynamicLinkParameters dynamicLinkParameters = DynamicLinkParameters(
       uriPrefix: 'https://moneyverse.page.link',
       link: Uri.parse(
-          'https://moneyverse.com/invite?email=${Get.find<UserDetail>().email}'),
+          'https://moneyverse.com/invite?code=${Get.find<UserDetail>().name}${Get.find<UserDetail>().userId}'),
       androidParameters: const AndroidParameters(
           packageName: 'com.moneyverse.app', minimumVersion: 0),
       socialMetaTagParameters: const SocialMetaTagParameters(
@@ -42,7 +42,7 @@ class DynamicLinksApi {
     return dynamicUrl.toString();
   }
 
-  Future<String> createProfiletLink(
+  Future<String> creatPostLink(
     String image,
     String name,
     String userId,
@@ -54,7 +54,7 @@ class DynamicLinksApi {
           packageName: 'com.moneyverse.app', minimumVersion: 0),
       socialMetaTagParameters: SocialMetaTagParameters(
         title: name,
-        description: 'Check this profile',
+        description: 'Checkout this post on moneyverse',
         imageUrl: Uri.parse(image),
       ),
     );

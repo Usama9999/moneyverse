@@ -7,6 +7,7 @@ import 'package:talentogram/globals/extensions/color_extensions.dart';
 import 'package:talentogram/globals/network_image.dart';
 import 'package:talentogram/globals/widgets/primary_button.dart';
 import 'package:talentogram/models/contest_model.dart';
+import 'package:talentogram/screens/main_screens/winners/winner_detail.dart';
 import 'package:talentogram/utils/app_colors.dart';
 import 'package:talentogram/utils/text_styles.dart';
 
@@ -245,45 +246,7 @@ class _WinnerWidgetState extends State<WinnerWidget>
                         ? Center(
                             child: Lottie.asset('assets/lottie/nodatagrey.json',
                                 height: 100))
-                        : Column(
-                            children: List.generate(
-                                widget.contest.winnerList.length, (index) {
-                              Winner winner = widget.contest.winnerList[index];
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: ht(38),
-                                      width: ht(38),
-                                      decoration:
-                                          ContainerProperties.roundDecoration(),
-                                      child: NetworkImageCustom(
-                                        image: winner.image,
-                                        radius: 100,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    Expanded(
-                                      child: Text(
-                                        winner.name,
-                                        style: normalText(size: 16),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    Image.asset(
-                                      'assets/images/ic_${winner.rank}.png',
-                                      height: 30,
-                                    )
-                                  ],
-                                ),
-                              );
-                            }),
-                          )
+                        : winnersList()
                   ],
                 ),
               )
@@ -302,6 +265,54 @@ class _WinnerWidgetState extends State<WinnerWidget>
                   textSize: 16,
                 )))
       ]),
+    );
+  }
+
+  Column winnersList() {
+    return Column(
+      children: List.generate(widget.contest.winnerList.length, (index) {
+        Winner winner = widget.contest.winnerList[index];
+        return GestureDetector(
+          onTap: () {
+            Get.to(() => WinnerDetails(
+                contestId: widget.contest.contestId,
+                userId: winner.userId,
+                type: widget.contest.type));
+          },
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Row(
+              children: [
+                Container(
+                  height: ht(38),
+                  width: ht(38),
+                  decoration: ContainerProperties.roundDecoration(),
+                  child: NetworkImageCustom(
+                    image: winner.image,
+                    radius: 100,
+                  ),
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    winner.name,
+                    style: normalText(size: 16),
+                  ),
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                Image.asset(
+                  'assets/images/ic_${winner.rank}.png',
+                  height: 30,
+                )
+              ],
+            ),
+          ),
+        );
+      }),
     );
   }
 }

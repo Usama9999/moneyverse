@@ -84,7 +84,10 @@ class LoginController extends GetxController {
     if (!validateion()) {
       return;
     }
-    var token = await FirebaseMessaging.instance.getToken();
+    var token = '';
+    try {
+      token = await FirebaseMessaging.instance.getToken() ?? '';
+    } catch (e) {}
     try {
       isLoading = true;
       update();
@@ -92,7 +95,7 @@ class LoginController extends GetxController {
 
       requestParams['email'] = controllerEmail.text;
       requestParams['password'] = controllerPassword.text;
-      requestParams['firebaseToken'] = token ?? '';
+      requestParams['firebaseToken'] = token;
 
       var signInEmail = await AuthRepo().login(requestParams);
 

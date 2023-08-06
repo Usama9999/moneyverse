@@ -497,4 +497,51 @@ class ContestRepo {
           DATA: ""));
     }
   }
+
+  Future<Either<Failure, Success>> getWinnerDetails(
+      HashMap<String, Object> requestParams) async {
+    try {
+      String response = await ReqListener.fetchPost(
+          strUrl: 'contest/contestResponse',
+          requestParams: requestParams,
+          mReqType: ReqType.post,
+          mParamType: ParamType.json);
+      Result? mResponse =
+          Result(responseStatus: true, responseMessage: 'Success');
+      if (response == 'internet') {
+        return Left(Failure(
+            DATA: "",
+            MESSAGE: "Please check your internet connection",
+            STATUS: false));
+      }
+      if (response.isNotEmpty) {
+        mResponse = Global.getData(response);
+      } else {
+        return Left(
+            Failure(DATA: "", MESSAGE: "No data found!", STATUS: false));
+      }
+
+      if (mResponse!.responseStatus == true) {
+        Success mSuccess = Success(
+            responseStatus: mResponse.responseStatus,
+            responseData: mResponse.responseData!,
+            responseMessage: mResponse.responseMessage);
+
+        return Right(mSuccess);
+      }
+
+      return Left(Failure(
+          MESSAGE: mResponse.responseMessage,
+          STATUS: false,
+          DATA: mResponse.responseData != null
+              ? mResponse.responseData as Object
+              : ""));
+    } catch (e) {
+      log(e.toString());
+      return Left(Failure(
+          STATUS: false,
+          MESSAGE: AppAlert.ALERT_SERVER_NOT_RESPONDING,
+          DATA: ""));
+    }
+  }
 }

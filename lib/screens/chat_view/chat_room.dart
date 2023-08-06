@@ -229,17 +229,6 @@ class ChatDetailScreenState extends State<ChatDetailScreen> {
               suffixIcon: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  IconButton(
-                    icon: Transform.rotate(
-                        angle: -1,
-                        child: Icon(
-                          Icons.attachment,
-                          color: AppColors.warning,
-                        )),
-                    onPressed: () {
-                      controller.showImagePicker(context);
-                    },
-                  ),
                   Container(
                     margin: const EdgeInsets.all(8),
                     alignment: Alignment.center,

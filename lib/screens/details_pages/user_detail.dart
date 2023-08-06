@@ -11,6 +11,7 @@ import 'package:talentogram/globals/widgets/appbars.dart';
 import 'package:talentogram/screens/chat_view/chat_room.dart';
 import 'package:talentogram/utils/app_colors.dart';
 import 'package:talentogram/utils/firebase_database.dart';
+import 'package:talentogram/utils/login_details.dart';
 import 'package:talentogram/utils/text_styles.dart';
 
 class OtherUserScreen extends StatefulWidget {
@@ -33,7 +34,7 @@ class _OtherUserScreenState extends State<OtherUserScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar('', isMain: true),
+      appBar: customAppBar(''),
       body: GetBuilder<OtherUserProfileController>(builder: (value) {
         return value.error
             ? Center(child: Lottie.asset('assets/lottie/error_lottie.json'))
@@ -207,65 +208,66 @@ class _OtherUserScreenState extends State<OtherUserScreen> {
         const SizedBox(
           width: 10,
         ),
-        Expanded(
-          child: GestureDetector(
-            onTap: () {
-              FireDatabase.createChatRoom(value.otherUserProfile.userDetails)
-                  .then((id) {
-                if (id.isNotEmpty) {
-                  Get.to(() => ChatDetailScreen(
-                        roomId: id['room'],
-                        userId: id['id'],
-                        image: id['image'],
-                        name: id['name'],
-                      ));
-                }
-              });
-            },
-            child: Container(
-              height: ht(60),
-              decoration: ContainerProperties.shadowDecoration(
-                  opacity: 0.2, color: AppColors.sparkliteblue4),
-              padding: EdgeInsets.symmetric(horizontal: wd(10)),
-              margin: EdgeInsets.symmetric(vertical: ht(10)),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Chat',
-                    style: regularText(color: AppColors.yellow, size: 12),
-                  ),
-                  SizedBox(
-                    height: ht(3),
-                  ),
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/images/ic_chat.png',
-                        height: ht(15),
-                        color: AppColors.sparkblue,
-                      ),
-                      SizedBox(
-                        width: wd(10),
-                      ),
-                      Expanded(
-                        child: FittedBox(
-                          alignment: Alignment.centerLeft,
-                          fit: BoxFit.scaleDown,
-                          child: Text(
-                            'Chat with User',
-                            style: subHeadingText(color: AppColors.sparkblue),
+        if (widget.userId != Get.find<UserDetail>().userId)
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                FireDatabase.createChatRoom(value.otherUserProfile.userDetails)
+                    .then((id) {
+                  if (id.isNotEmpty) {
+                    Get.to(() => ChatDetailScreen(
+                          roomId: id['room'],
+                          userId: id['id'],
+                          image: id['image'],
+                          name: id['name'],
+                        ));
+                  }
+                });
+              },
+              child: Container(
+                height: ht(60),
+                decoration: ContainerProperties.shadowDecoration(
+                    opacity: 0.2, color: AppColors.sparkliteblue4),
+                padding: EdgeInsets.symmetric(horizontal: wd(10)),
+                margin: EdgeInsets.symmetric(vertical: ht(10)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Chat',
+                      style: regularText(color: AppColors.yellow, size: 12),
+                    ),
+                    SizedBox(
+                      height: ht(3),
+                    ),
+                    Row(
+                      children: [
+                        Image.asset(
+                          'assets/images/ic_chat.png',
+                          height: ht(15),
+                          color: AppColors.sparkblue,
+                        ),
+                        SizedBox(
+                          width: wd(10),
+                        ),
+                        Expanded(
+                          child: FittedBox(
+                            alignment: Alignment.centerLeft,
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              'Chat with User',
+                              style: subHeadingText(color: AppColors.sparkblue),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
       ],
     );
   }

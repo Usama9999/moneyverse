@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:talentogram/globals/enum.dart';
@@ -68,6 +69,10 @@ class SignUpController extends GetxController {
   }
 
   signupTask() async {
+    String token = '';
+    try {
+      token = await FirebaseMessaging.instance.getToken() ?? '';
+    } catch (e) {}
     try {
       if (validation()) {
         isLoading = true;
@@ -77,6 +82,7 @@ class SignUpController extends GetxController {
         requestParams['lastName'] = lastName.text.trim();
         requestParams['email'] = controllerEmail.text.trim();
         requestParams['invite'] = controllerInvite.text.trim();
+        requestParams['firebaseToken'] = token;
         requestParams['password'] = controllerPassword.text.trim();
 
         var signInEmail = await AuthRepo().signup(requestParams);

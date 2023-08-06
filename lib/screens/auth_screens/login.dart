@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:talentogram/controllers/auth_controllers/forgor_password.dart';
@@ -10,6 +11,7 @@ import 'package:talentogram/screens/auth_screens/forget_password.dart';
 import 'package:talentogram/screens/auth_screens/sign_up.dart';
 import 'package:talentogram/utils/app_colors.dart';
 import 'package:talentogram/utils/text_styles.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -58,6 +60,32 @@ class _LoginState extends State<Login> {
                       controller.focusNodePassword,
                       hint: 'Password',
                       obscure: true,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: RichText(
+                          textAlign: TextAlign.start,
+                          text: TextSpan(children: [
+                            TextSpan(text: ' I agree to ', style: normalText()),
+                            TextSpan(
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () => launchUrl(Uri.parse(
+                                      'https://moneyverse7.netlify.app/policy')),
+                                text: ' Privacy Policy ',
+                                style:
+                                    regularText(color: AppColors.primaryColor)),
+                            TextSpan(text: ' & ', style: normalText()),
+                            TextSpan(
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () => launchUrl(Uri.parse(
+                                      'https://moneyverse7.netlify.app/termsandcondition')),
+                                text: ' Terms ',
+                                style:
+                                    regularText(color: AppColors.primaryColor))
+                          ])),
                     ),
                     const SizedBox(
                       height: 10,

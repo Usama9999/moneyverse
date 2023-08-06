@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:talentogram/globals/app_views.dart';
 import 'package:talentogram/globals/network_image.dart';
 import 'package:talentogram/globals/widgets/appbars.dart';
 import 'package:talentogram/models/chat_group_model.dart';
@@ -22,8 +23,7 @@ class ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: customAppBar('Chats', isMain: true, isCentered: true),
-        body: chatList());
+        appBar: customAppBar('Chats', isCentered: true), body: chatList());
   }
 
   Column chatList() {
@@ -41,7 +41,7 @@ class ChatScreenState extends State<ChatScreen> {
                 return const Text('Something went wrong');
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Container();
+                return AppViews.showLoading();
               }
               if (snapshot.data!.docs.isEmpty) {
                 return noChatContainer();
@@ -72,7 +72,10 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   Expanded noChatContainer() {
-    return Expanded(child: Center());
+    return Expanded(
+        child: Center(
+      child: AppViews.showGif(true, 'nodata', text: 'No Chats'),
+    ));
   }
 }
 

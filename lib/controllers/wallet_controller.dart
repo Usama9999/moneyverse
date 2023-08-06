@@ -80,26 +80,11 @@ class WalletController extends GetxController {
   }
 
   displayPaymentSheet(Map offer) async {
-    await Stripe.instance.presentPaymentSheet().then((value) async {
-      paymentIntent = null;
-      HashMap<String, Object> requestParams = HashMap();
-      requestParams['tokens'] = offer['tokens'];
-      loading = true;
-      update();
-      var res = await UserRepo().buyTokens(requestParams);
-      res.fold((failure) {}, (mResult) {
-        DialogueManager.showInfoDialogue(
-            "You have successfully purchased ${offer['tokens']}. Tokens. We wish you good luck for your future contests.");
-        userData['balance'] += offer['tokens'];
-      });
-      loading = false;
-      update();
-    }).onError((error, stackTrace) {
-      loading = false;
-      update();
-      DialogueManager.showInfoDialogue("The payment process is cancelled.");
-      throw Exception(error);
-    });
+    await Stripe.instance
+        .presentPaymentSheet(options: const PaymentSheetPresentOptions());
+    DialogueManager.showInfoDialogue(
+        "You have successfully purchased ${offer['tokens']}. Tokens. We wish you good luck for your future contests.");
+    userData['balance'] += offer['tokens'];
   }
 
   Map userData = {"earnings": 0, "balance": 0};

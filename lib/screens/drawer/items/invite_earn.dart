@@ -139,7 +139,8 @@ class InviteFriendsState extends State<InviteFriends> {
                                 size: 45,
                                 onTap: () async {
                                   if (codeController.text.isNotEmpty) {
-                                    Share.share(codeController.text);
+                                    Share.share(
+                                        "${codeController.text}\n Use below code to signup.\n code: ${Get.find<UserDetail>().name.split(' ')[0]}${Get.find<UserDetail>().userId}");
                                   }
                                 },
                                 child: Padding(

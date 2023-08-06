@@ -56,10 +56,10 @@ class CustomDrawer extends StatelessWidget {
                     Get.to(() => const Notifications());
                   }),
                   divider(),
-                  optionItem("Invite & Earn", () {
-                    Get.back();
-                    Get.to(() => const InviteFriends());
-                  }, color: AppColors.orange, size: 9),
+                  // optionItem("Invite & Earn", () {
+                  //   Get.back();
+                  //   Get.to(() => const InviteFriends());
+                  // }, color: AppColors.orange, size: 9),
                   optionItem("Help", () {
                     Get.back();
 

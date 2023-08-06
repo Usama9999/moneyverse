@@ -73,17 +73,14 @@ class _SignUpState extends State<SignUp> {
                       hint: 'Password',
                       obscure: true,
                     ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    customTextFiled(
-                        controller.controllerInvite, controller.focusNodeInvite,
-                        textInputFormatter: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        textInputType: TextInputType.number,
-                        obscure: false,
-                        hint: 'Invite Code'),
+                    // const SizedBox(
+                    //   height: 15,
+                    // ),
+                    // customTextFiled(
+                    //     controller.controllerInvite, controller.focusNodeInvite,
+                    //     textInputType: TextInputType.number,
+                    //     obscure: false,
+                    //     hint: 'Invite Code'),
                     const SizedBox(
                       height: 20,
                     ),

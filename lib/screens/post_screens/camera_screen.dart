@@ -326,17 +326,6 @@ class _CameraScreenState extends State<CameraScreen>
                   cameraType = CameraType.rear;
                 }
               }),
-            if (_isImage)
-              _iconOption(_getFlashIcon(controller!.value.flashMode), 'Flash',
-                  () {
-                if (controller!.value.flashMode == FlashMode.auto) {
-                  onSetFlashModeButtonPressed(FlashMode.always);
-                } else if (controller!.value.flashMode == FlashMode.always) {
-                  onSetFlashModeButtonPressed(FlashMode.off);
-                } else if (controller!.value.flashMode == FlashMode.off) {
-                  onSetFlashModeButtonPressed(FlashMode.auto);
-                }
-              }),
             if (!_isRecording)
               _iconOption(
                   _getMediaIcon(mediaType), _isImage ? 'Video' : 'Image', () {

@@ -9,8 +9,6 @@ import 'package:talentogram/globals/widgets/appbars.dart';
 import 'package:talentogram/utils/app_colors.dart';
 import 'package:talentogram/utils/text_styles.dart';
 
-import 'line_chart.dart';
-
 class MyStats extends StatefulWidget {
   const MyStats({super.key});
 
@@ -84,14 +82,14 @@ class _MyStatsState extends State<MyStats> {
                 SizedBox(
                   height: ht(20),
                 ),
-                Text(
-                  'EARNING CHART',
-                  style: subHeadingText(),
-                ),
-                SizedBox(
-                  height: ht(30),
-                ),
-                SizedBox(height: ht(250), child: LineChartCustom()),
+                // Text(
+                //   'EARNING CHART',
+                //   style: subHeadingText(),
+                // ),
+                // SizedBox(
+                //   height: ht(30),
+                // ),
+                // SizedBox(height: ht(250), child: LineChartCustom()),
               ],
             ),
             AppViews.loadingScreen(value.loading)

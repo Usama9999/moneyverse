@@ -64,7 +64,7 @@ class ReqListenerMultiPart {
 
     debugPrint("REQ. lHeaders : $lHeaders");
     debugPrint("REQ. PARAMS : $requestParams");
-    debugPrint("REQ. URL : ${RequestBuilder.liveUrl}$strUrl");
+    debugPrint("REQ. URL : ${RequestBuilder.useUrl}$strUrl");
     debugPrint("REQ. BODY : ${response.body}");
     if (response.statusCode == 413) {
       return response.statusCode.toString();
