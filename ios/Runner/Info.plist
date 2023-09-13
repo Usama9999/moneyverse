@@ -33,7 +33,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We need to access to the microphone to record audio in videos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Moneyverse photo use</string>
+	<string>Moneyverse want photos permission to take photos or videos</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

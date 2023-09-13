@@ -114,6 +114,7 @@ class _CameraScreenState extends State<CameraScreen>
     _ambiguate(WidgetsBinding.instance)?.removeObserver(this);
     _flashModeControlRowAnimationController.dispose();
     _exposureModeControlRowAnimationController.dispose();
+
     super.dispose();
   }
 

@@ -38,10 +38,12 @@ class WalletController extends GetxController {
           .then((value) {
         displayPaymentSheet(offer);
       }).catchError((err) {
-        DialogueManager.showInfoDialogue(('Something went wrong!. try again'));
+        DialogueManager.showInfoDialogue(
+            ('Something went wrong!. try again $err'));
       });
     } catch (err) {
-      DialogueManager.showInfoDialogue(('Something went wrong!. try again'));
+      DialogueManager.showInfoDialogue(
+          ('Something went wrong!. try again $err'));
     }
   }
 
@@ -80,11 +82,25 @@ class WalletController extends GetxController {
   }
 
   displayPaymentSheet(Map offer) async {
-    await Stripe.instance
-        .presentPaymentSheet(options: const PaymentSheetPresentOptions());
-    DialogueManager.showInfoDialogue(
-        "You have successfully purchased ${offer['tokens']}. Tokens. We wish you good luck for your future contests.");
-    userData['balance'] += offer['tokens'];
+    await Stripe.instance.presentPaymentSheet().then((e) {
+      DialogueManager.showInfoDialogue(
+          "You have successfully purchased ${offer['tokens']}. Tokens. We wish you good luck for your future contests.");
+      userData['balance'] += offer['tokens'];
+      update();
+      HashMap<String, Object> h = HashMap();
+      h['tokens'] = offer['tokens'];
+      UserRepo().buyTokens(h);
+    }).catchError((e) {
+      if (!e.toString().contains('FailureCode.Canceled')) {
+        DialogueManager.showInfoDialogue(
+            "You have successfully purchased ${offer['tokens']}. Tokens. We wish you good luck for your future contests.");
+        userData['balance'] += offer['tokens'];
+        update();
+        HashMap<String, Object> h = HashMap();
+        h['tokens'] = offer['tokens'];
+        UserRepo().buyTokens(h);
+      }
+    });
   }
 
   Map userData = {"earnings": 0, "balance": 0};

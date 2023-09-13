@@ -112,7 +112,7 @@ class _OtherUserScreenState extends State<OtherUserScreen> {
                         child: topRow(value),
                       ),
                       Text(
-                        'CONTSET HISTORY',
+                        'CONTESTS',
                         style: subHeadingText(),
                       ),
                       SizedBox(

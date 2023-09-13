@@ -174,6 +174,55 @@ class PostRepo {
     }
   }
 
+  Future<Either<Failure, Success>> reportPost(int postId) async {
+    try {
+      HashMap<String, Object> requestParams = HashMap();
+      requestParams['postId'] = postId;
+      String url = 'posts/report';
+      String response = await ReqListener.fetchPost(
+          strUrl: url,
+          requestParams: requestParams,
+          mReqType: ReqType.post,
+          mParamType: ParamType.json);
+      Result? mResponse =
+          Result(responseStatus: true, responseMessage: 'Success');
+      if (response.isNotEmpty) {
+        mResponse = Global.getData(response);
+      } else {
+        return Left(
+            Failure(DATA: "", MESSAGE: "No data found.", STATUS: false));
+      }
+
+      if (mResponse!.responseStatus == true) {
+        Map result = mResponse.responseData as Map;
+        int id = result['insertId'];
+        Success mSuccess = Success(
+            responseStatus: mResponse.responseStatus,
+            responseData: id,
+            responseMessage: mResponse.responseMessage);
+
+        return Right(mSuccess);
+      }
+
+      if (!Global.checkNull(mResponse.responseMessage)) {
+        mResponse.responseMessage = AppAlert.ALERT_SERVER_NOT_RESPONDING;
+      }
+
+      return Left(Failure(
+          MESSAGE: mResponse.responseMessage,
+          STATUS: false,
+          DATA: mResponse.responseData != null
+              ? mResponse.responseData as Object
+              : ""));
+    } catch (e) {
+      log(e.toString());
+      return Left(Failure(
+          STATUS: false,
+          MESSAGE: AppAlert.ALERT_SERVER_NOT_RESPONDING,
+          DATA: ""));
+    }
+  }
+
   Future<void> deleteCommentPost(HashMap<String, Object> requestParams) async {
     await ReqListener.fetchPost(
         strUrl: 'posts/deletComment',

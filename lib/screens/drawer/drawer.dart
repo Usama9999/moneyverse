@@ -81,11 +81,6 @@ class CustomDrawer extends StatelessWidget {
                         context: context,
                         builder: (_) => const SignoutDialoge());
                   }, color: AppColors.textGrey, size: 9),
-                  optionItem("Delete Account", () {
-                    showDialog(
-                        context: context,
-                        builder: (_) => const DeleteAccountDialoge());
-                  }, color: AppColors.red, size: 9),
                 ],
               ),
             )

@@ -209,7 +209,7 @@ class ProfileController extends GetxController {
           strTitle: "",
           strMsg: 'Please provide your bank details.',
           toastType: TOAST_TYPE.toastInfo);
-    } else if (!Get.find<UserDetail>().isEarningVisible) {
+    } else if (!Get.find<UserDetail>().isVerified) {
       Get.find<NavBarController>().changeTab(0);
       Get.to(() => const EditProfile());
       Global.showToastAlert(

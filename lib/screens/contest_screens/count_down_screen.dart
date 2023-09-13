@@ -94,6 +94,9 @@ class _CountDownScreenState extends State<CountDownScreen> {
                       ],
                     ),
                   ),
+                  const SizedBox(
+                    height: 20,
+                  )
                 ],
               );
       }),

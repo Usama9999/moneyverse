@@ -53,7 +53,7 @@ class ContestModel {
         division: json["division"],
         startDate: json["startDate"],
         endDate: json["endDate"],
-        winners: json["winners"] ?? [],
+        winners: json["winners"] == null ? [] : jsonDecode(json["winners"]),
         participents: json["participents"] ?? 0,
         participated: json["participated"],
       );

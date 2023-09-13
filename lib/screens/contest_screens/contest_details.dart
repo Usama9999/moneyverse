@@ -191,7 +191,7 @@ class _ContestDetailsState extends State<ContestDetails> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Price will be districuted by following creteria:',
+            'Price will be distributed by following criteria:',
             style: headingText(size: 18),
           ),
           SizedBox(

@@ -9,6 +9,7 @@ import 'package:talentogram/globals/network_image.dart';
 import 'package:talentogram/globals/widgets/custom_bottom_option_sheet.dart';
 import 'package:talentogram/globals/widgets/icons.dart';
 import 'package:talentogram/models/post_model.dart';
+import 'package:talentogram/respositories/post_repo.dart';
 import 'package:talentogram/screens/post_screens/post_comments_screen.dart';
 import 'package:talentogram/utils/text_styles.dart';
 
@@ -75,17 +76,18 @@ class _UserPostState extends State<UserPost> {
                         ),
                       ),
                     ),
-                    ThreeDotIcon(onTap: () {
-                      customBottomSheet(context, ["Report"], -1, (val) {
-                        String text = "Reported successfully";
-                        Global.showToastAlert(
-                          context: Get.overlayContext!,
-                          strTitle: "ok",
-                          strMsg: text,
-                          toastType: TOAST_TYPE.toastSuccess,
-                        );
-                      });
-                    })
+                    // ThreeDotIcon(onTap: () {
+                    //   customBottomSheet(context, ["Report"], -1, (val) {
+                    //     String text = "Reported successfully";
+                    //     Global.showToastAlert(
+                    //       context: Get.overlayContext!,
+                    //       strTitle: "ok",
+                    //       strMsg: text,
+                    //       toastType: TOAST_TYPE.toastSuccess,
+                    //     );
+                    //     PostRepo().reportPost(widget.post.postId);
+                    //   });
+                    // })
                   ],
                 ),
               ),

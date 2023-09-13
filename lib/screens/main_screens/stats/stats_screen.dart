@@ -44,7 +44,7 @@ class _MyStatsState extends State<MyStats> {
                   child: topRow(value),
                 ),
                 Text(
-                  'CONTSET HISTORY',
+                  'CONTESTS HISTORY',
                   style: subHeadingText(),
                 ),
                 SizedBox(

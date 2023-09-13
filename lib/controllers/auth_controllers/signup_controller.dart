@@ -64,6 +64,19 @@ class SignUpController extends GetxController {
       FocusScope.of(Get.overlayContext!).requestFocus(focusNodePassword);
       return false;
     }
+    if (!(controllerPassword.text.contains(RegExp(r'[A-Z]')) &&
+        controllerPassword.text.contains(RegExp(r'[0-9]')) &&
+        controllerPassword.text.contains(RegExp(r'[a-z]')) &&
+        controllerPassword.text.length > 7)) {
+      Global.showToastAlert(
+          context: Get.overlayContext!,
+          strTitle: "ok",
+          strMsg:
+              'Password must contain one upper case, one lower case, one number or symbol and it must be at least 8 characters long',
+          toastType: TOAST_TYPE.toastError);
+      FocusScope.of(Get.overlayContext!).requestFocus(focusNodePassword);
+      return false;
+    }
 
     return true;
   }
